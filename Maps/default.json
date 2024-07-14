@@ -1,0 +1,3173 @@
+{
+
+  "adjacency": {
+    "army" : {
+      "ALB": ["TRI", "SER", "GRE"],
+      "ANK": ["ARM", "SMY", "CON"],
+      "APU": ["NAP", "ROM", "VEN"],
+      "ARM": ["SEV", "SYR", "SMY", "ANK"],
+      "BEL": ["HOL", "RUH", "BUR", "PIC"],
+      "BER": ["PRU", "SIL", "MUN", "KIE"],
+      "BOH": ["SIL", "GAL", "VIE", "TYR", "MUN"],
+      "BRE": ["PIC", "PAR", "GAS"],
+      "BUL": ["RUM", "CON", "GRE", "SER"],
+      "BUR": ["BEL", "RUH", "MUN", "MAR", "GAS", "PAR", "PIC"],
+      "BUD": ["GAL", "RUM", "SER", "TRI", "VIE"],
+      "CLY": ["EDI", "LVP"],
+      "CON": ["ANK", "SMY", "BUL"],
+      "DEN": ["SWE", "KIE"],
+      "EDI": ["YOR", "LVP", "CLY"],
+      "FIN": ["NWY", "STP", "SWE"],
+      "GAL": ["WAR", "UKR", "RUM", "BUD", "VIE", "BOH", "SIL"],
+      "GAS": ["BRE", "PAR", "BUR", "MAR", "SPA"],
+      "GRE": ["SER", "BUL", "ALB"],
+      "HOL": ["KIE", "RUH", "BEL"],
+      "KIE": ["DEN", "BER", "MUN", "RUH", "HOL"],
+      "LON": ["YOR", "WAL"],
+      "LVN": ["STP", "MOS", "WAR", "PRU"],
+      "LVP": ["CLY", "EDI", "YOR", "WAL"],
+      "MAR": ["BUR", "PIE", "SPA", "GAS"],
+      "MOS": ["STP", "SEV", "UKR", "WAR", "LVN"],
+      "MUN": ["KIE", "BER", "SIL", "BOH", "TYR", "BUR", "RUH"],
+      "NAF": ["TUN"],
+      "NAP": ["APU", "ROM"],
+      "NWY": ["STP", "FIN", "SWE"],
+      "PAR": ["PIC", "BUR", "GAS", "BRE"],
+      "PIC": ["BEL", "BUR", "PAR", "BRE"],
+      "PIE": ["TYR", "VEN", "TUS", "MAR"],
+      "POR": ["SPA"],
+      "PRU": ["LVN", "WAR", "SIL", "BER"],
+      "ROM": ["VEN", "APU", "NAP", "TUS"],
+      "RUH": ["HOL", "KIE", "MUN", "BUR", "BEL"],
+      "RUM": ["UKR", "SEV", "BUL", "SER", "BUD", "GAL"],
+      "SER": ["BUD", "RUM", "BUL", "GRE", "ALB", "TRI"],
+      "SEV": ["MOS", "ARM", "RUM", "UKR"],
+      "SIL": ["PRU", "WAR", "GAL", "BOH", "MUN", "BER"],
+      "SMY": ["ANK", "ARM", "SYR", "CON"],
+      "SPA": ["GAS", "MAR", "POR"],
+      "STP": ["MOS", "LVN", "FIN", "NWY"],
+      "SWE": ["NWY", "FIN", "DEN"],
+      "SYR": ["ARM", "SMY"],
+      "TRI": ["VIE", "BUD", "SER", "ALB", "VEN", "TYR"],
+      "TUN": ["NAF"],
+      "TUS": ["VEN", "ROM", "PIE"],
+      "TYR": ["MUN", "BOH", "VIE", "TRI", "VEN", "PIE"],
+      "UKR": ["MOS", "SEV", "RUM", "GAL", "WAR"],
+      "VEN": ["TYR", "TRI", "APU", "ROM", "TUS", "PIE"],
+      "VIE": ["BOH", "GAL", "BUD", "TRI", "TYR"],
+      "WAL": ["LVP", "YOR", "LON"],
+      "WAR": ["PRU", "LVN", "MOS", "UKR", "GAL", "SIL"],
+      "YOR": ["EDI", "LON", "WAL", "LVP"]
+    },
+    "fleet" : {
+      "ADR": ["TRI", "ALB", "ION", "APU", "VEN"],
+      "AEG": ["BUL-sc", "CON", "SMY", "EAS", "ION", "GRE"],
+      "ALB": ["TRI", "GRE", "ION", "ADR"],
+      "ANK": ["BLA", "ARM", "CON"],
+      "APU": ["ADR", "ION", "NAP", "VEN"],
+      "ARM": ["SEV", "ANK", "BLA"],
+      "BAL": ["BOT", "LVN", "PRU", "BER", "KIE", "DEN", "SWE"],
+      "BAR": ["STP-nc", "NWY", "NWG"],
+      "BEL": ["NTH", "HOL", "PIC", "ENG"],
+      "BER": ["BAL", "PRU", "KIE"],
+      "BLA": ["SEV", "ARM", "ANK", "CON", "BUL-ec", "RUM"],
+      "BRE": ["ENG", "PIC", "GAS", "MAO"],
+      "BUL": ["ec-RUM", "ec-BLA", "ec-CON", "sc-CON", "sc-AEG", "sc-GRE"],
+      "BOT": ["SWE", "FIN", "STP-sc", "LVN", "BAL"],
+      "CLY": ["NAO", "NWG", "EDI", "LVP"],
+      "CON": ["BLA", "ANK", "SMY", "AEG", "BUL-sc", "BUL-ec"],
+      "DEN": ["SKA", "SWE", "BAL", "KIE", "HEL", "NTH"],
+      "EAS": ["SMY", "SYR", "ION", "AEG"],
+      "EDI": ["NWG", "NTH", "YOR", "CLY"],
+      "ENG": ["WAL", "LON", "NTH", "BEL", "PIC", "BRE", "MAO", "IRI"],
+      "FIN": ["NWY", "STP-sc", "BOT", "SWE"],
+      "GAS": ["BRE", "SPA-nc", "MAO"],
+      "GRE": ["BUL-sc", "AEG", "ION", "ALB"],
+      "HEL": ["NTH", "DEN", "KIE", "HOL"],
+      "HOL": ["NTH", "HEL", "KIE", "BEL"],
+      "ION": ["ADR", "ALB", "GRE", "AEG", "EAS", "TUN", "TYS", "NAP", "APU"],
+      "IRI": ["NAO", "LVP", "WAL", "ENG", "MAO"],
+      "KIE": ["DEN", "BAL", "BER", "HOL", "HEL"],
+      "LON": ["YOR", "NTH", "ENG", "WAL"],
+      "LVN": ["BOT", "STP-sc", "PRU", "BAL"],
+      "LVP": ["CLY", "WAL", "IRI", "NAO"],
+      "LYO": ["MAR", "PIE", "TUS", "TYS", "WES", "SPA-sc"],
+      "MAO": ["NAO", "IRI", "ENG", "BRE", "GAS", "SPA-nc", "POR", "SPA-sc", "WES", "NAF"],
+      "MAR": ["PIE", "LYO", "SPA-sc"],
+      "NAF": ["WES", "TUN", "MAO"],
+      "NAO": ["NWG", "CLY", "LVP", "IRI", "MAO"],
+      "NAP": ["APU", "ION", "TYS", "ROM"],
+      "NTH": ["NWG", "NWY", "SKA", "DEN", "HEL", "HOL", "BEL", "ENG", "LON", "YOR", "EDI"],
+      "NWG": ["BAR", "NWY", "NTH", "EDI", "CLY", "NAO"],
+      "NWY": ["NWG", "BAR", "STP-nc", "FIN", "SWE", "SKA", "NTH"],
+      "PIC": ["ENG", "BEL", "BRE"],
+      "PIE": ["TUS", "LYO", "MAR"],
+      "POR": ["MAO", "SPA-nc", "SPA-sc"],
+      "PRU": ["BAL", "LVN", "BER"],
+      "ROM": ["NAP", "TYS", "TUS"],
+      "RUM": ["SEV", "BLA", "BUL-ec"],
+      "SEV": ["ARM", "BLA", "RUM"],
+      "SKA": ["NWY", "SWE", "DEN", "NTH"],
+      "SMY": ["SYR", "EAS", "AEG", "CON"],
+      "SPA": ["nc-MAO", "sc-MAO", "nc-GAS", "sc-MAR", "sc-LYO", "sc-WES", "sc-POR", "nc-POR"],
+      "STP": ["sc-LVN", "sc-BOT", "sc-FIN", "nc-NWY", "nc-BAR"],
+      "SWE": ["NWY", "FIN", "BOT", "BAL", "DEN", "SKA"],
+      "SYR": ["ARM", "EAS", "SMY"],
+      "TRI": ["ALB", "ADR", "VEN"],
+      "TUN": ["WES", "TYS", "ION", "NAF"],
+      "TUS": ["ROM", "TYS", "LYO", "PIE"],
+      "TYS": ["TUS", "ROM", "NAP", "ION", "TUN", "WES", "LYO"],
+      "VEN": ["TRI", "ADR", "APU"],
+      "WAL": ["LVP", "LON", "ENG", "IRI"],
+      "WES": ["LYO", "TYS", "TUN", "NAF", "MAO", "SPA-sc"],
+      "YOR": ["EDI", "NTH", "LON"]
+    }
+
+  },
+
+  "map_data": {
+
+    "ADR": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Adriatic Sea",
+
+      "location": {
+        "name": [468, 654],
+        "unit": [446, 624]
+      },
+
+      "borders": [
+        612,
+        610,609,608,607,606,605,604,
+        712,
+        711,
+        713,
+        714,
+        715,
+        716,
+        615,
+        614,
+        613
+      ]
+
+    },
+
+    "AEG": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Aegean Sea",
+
+      "location": {
+        "name": [586, 725],
+        "unit": [600, 755]
+      },
+
+      "borders": [
+        695,
+        587,
+        586,
+        583,
+        582,
+        581,
+        580,
+        579,
+        578,
+        677,676,675,674,673,672,
+        661,
+        660,
+        678,679,
+        754,
+        680,681,682,683,684,685,686,687,688,689,690,691,692,693,694
+      ]
+
+    },
+
+    "ALB": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Albania",
+
+      "location": {
+        "name": [504, 654],
+        "unit": [515, 670]
+      },
+
+      "borders": [
+        603,
+        600,
+        599,
+        598,
+        597,
+        710,
+        709,
+        711,
+        712,
+        604
+      ]
+
+    },
+
+    "ANK": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Ankara",
+
+      "location": {
+        "name": [755, 647],
+        "unit": [745, 660],
+        "supply": [718, 671]
+      },
+
+      "borders": [
+        486,485,484,483,482,481,480,479,
+        768,769,770,
+        570,571,572,573,574
+      ]
+
+    },
+
+    "APU": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Apulia",
+
+      "location": {
+        "name": [443, 668],
+        "unit": [455, 667]
+      },
+
+      "borders": [
+        616,
+        615,
+        716,715,714,713,
+        717,718,719,720,721,722,723
+      ]
+
+    },
+
+    "ARM": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Armenia",
+
+      "location": {
+        "name": [860, 664],
+        "unit": [855, 648]
+      },
+
+      "borders": [
+        353,352,351,350,
+        474,475,476,477,478,479,480
+      ]
+
+    },
+
+    "BAL": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Baltic Sea",
+
+      "location": {
+        "name": [468, 368],
+        "unit": [490, 350]
+      },
+
+      "borders": [
+        170,169,168,167,166,165,164,
+        186,
+        198,
+        197,
+        199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217
+      ]
+
+    },
+
+    "BAR": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Barents Sea",
+
+      "location": {
+        "name": [656, 20],
+        "unit": [655, 53]
+      },
+
+      "borders": [
+
+        28,
+
+        47,
+
+        48,
+
+        49,
+
+        50,
+
+        51,
+
+        52,
+
+        53,
+
+        54,
+
+        55,
+
+        56,
+
+        57,
+
+        58,
+
+        59,
+
+        60,
+
+        61,
+
+        62,
+
+        63,
+
+        64,
+
+        65,
+
+        66,
+
+        67,
+
+        68,
+
+        69,
+
+        70,
+
+        71,
+
+        72,
+
+        73,
+
+        74,
+
+        75,
+
+        76,
+
+        77,
+
+        78,
+
+        79,
+
+        80,
+
+        81,
+
+        82,
+
+        83,
+
+        84,
+
+        85,
+
+        86,
+
+        87,
+
+        88,
+
+        89,
+
+        90,
+
+        91,
+
+        92,
+        
+        29
+
+      ]
+
+    },
+
+    "BEL": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Belgium",
+
+      "location": {
+        "name": [305, 455],
+        "unit": [309, 447],
+        "supply": [293, 433]
+      },
+
+      "borders": [
+        233,
+        232,
+        327,
+        326,
+        325,
+        328,
+        329,
+        330,
+        331,
+        272
+      ]
+
+    },
+
+    "BER": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Berlin",
+
+      "location": {
+        "name": [418, 415],
+        "unit": [430, 406],
+        "supply": [432, 427]
+      },
+
+      "borders": [
+        211,210,209,208,207,
+        311,
+        310,
+        309,
+        312,313,314,315,316,317
+      ]
+
+    },
+
+    "BLA": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Black Sea",
+
+      "location": {
+        "name": [741, 593],
+        "unit": [710, 600]
+      },
+
+      "borders": [
+        384,383,382,381,380,379,378,377,376,375,374,373,372,371,370,369,368,367,366,365,364,363,362,361,360,359,358,357,356,355,354,353,
+        480,481,482,483,484,485,486,487,488,489,490,491,492
+      ]
+
+    },
+
+    "BOH": {
+
+      "type": "land",
+
+      "is_supply_centre": false,
+
+      "full_name": "Bohemia",
+
+      "location": {
+        "name": [433, 490],
+        "unit": [445, 481]
+      },
+
+      "borders": [
+        348,347,346,345,344,
+        404,405,406,407,408,409,410,411,412,413
+      ]
+
+    },
+
+    "BRE": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Brest",
+
+      "location": {
+        "name": [216, 490],
+        "unit": [210, 480],
+        "supply": [183, 461]
+      },
+
+      "borders": [
+        282,281,280,279,278,277,276,275,
+        335,336,337,338,339,340,341,342
+      ]
+
+    },
+
+    "BUL": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Bulgaria",
+
+      "location": {
+        "name": [594, 630],
+        "unit": [590, 636],
+        "supply": [565, 631]
+      },
+
+      "borders": [
+        500,499,498,497,496,495,494,493,
+        490,
+        489,
+        488,
+        585,
+        584,
+        583,
+        586,587,588,589,590,591,592,593,594,595
+      ],
+
+      "coasts": [
+
+        {
+
+          "label": "ec",
+
+          "rel_location": [25, -5]
+
+        },
+
+        {
+
+          "label": "sc",
+
+          "rel_location": [6, 30]
+
+        }
+
+      ]
+
+    },
+
+    "BUR": {
+
+      "type": "land",
+
+      "is_supply_centre": false,
+
+      "full_name": "Burgundy",
+
+      "location": {
+        "name": [294, 527],
+        "unit": [307, 509]
+      },
+
+      "borders": [
+        330,
+        329,
+        430,
+        427,
+        426,
+        425,
+        431,432,433,434,435,436,437,438,439,440,
+        332
+      ]
+
+    },
+
+    "BOT": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Gulf of Bothnia",
+
+      "location": {
+        "name": [496, 248],
+        "unit": [525, 288]
+      },
+
+      "borders": [
+        180,179,178,177,176,175,174,
+        114,113,112,111,110,109,108,
+        181,182,183,184,185,186,
+        164,163,162,161,160,159,158,157,156,155,154,153
+      ]
+
+    },
+
+    "BUD": {
+
+      "type": "land",
+
+      "is_supply_centre": true,
+
+      "full_name": "Budapest",
+
+      "location": {
+        "name": [528, 554],
+        "unit": [535, 541],
+        "supply": [496, 538]
+      },
+
+      "borders": [
+        403,402,401,400,399,398,
+        506,505,504,503,502,501,
+        507,508,509,510,511,512,513,514,515
+      ]
+
+    },
+
+    "CLY": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Clyde",
+
+      "location": {
+        "name": [220, 284],
+        "unit": [228, 278]
+      },
+
+      "borders": [
+        46,45,44,43,
+        248,
+        247,
+        7,6,5,4,3,2
+      ]
+
+    },
+
+    "CON": {
+
+      "type": "canal",
+
+      "is_supply_centre": true,
+
+      "full_name": "Constantinople",
+
+      "location": {
+        "name": [652, 690],
+        "unit": [665, 675],
+        "supply": [635, 679]
+      },
+
+      "borders": [
+        488,487,486,
+        574,
+        573,
+        575,576,577,578,579,580,581,582,583,584,585
+      ],
+
+      "canal_points": [
+        582,
+        772, 773, 774, 775, 776, 777, 778
+      ]
+
+    },
+
+    "DEN": {
+
+      "type": "canal",
+
+      "is_supply_centre": true,
+
+      "full_name": "Denmark",
+
+      "location": {
+        "name": [385, 334],
+        "unit": [397, 352],
+        "supply": [415, 357]
+      },
+
+      "borders": [
+        220,219,218,
+        171,
+        170,
+        217,
+        216,
+        215,
+        222,
+        229
+      ]
+
+    },
+
+    "EAS": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Eastern Mediterranean",
+
+      "location": {
+        "name": [677, 781],
+        "unit": [718, 780]
+      },
+
+      "borders": [
+        765,764,763,762,761,
+        657,658,659,660,661,662,663,664,665,666,667,668,669,670,671
+      ]
+
+    },
+
+    "EDI": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Edinburgh",
+
+      "location": {
+        "name": [249, 285],
+        "unit": [255, 304],
+        "supply": [251, 315]
+      },
+
+      "borders": [
+        43,
+        42,
+        244,
+        243,
+        242,
+        245,246,247,248
+      ]
+
+    },
+
+    "ENG": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "English Channel",
+
+      "location": {
+        "name": [220, 433],
+        "unit": [209, 440]
+      },
+
+      "borders": [
+        249,
+        234,
+        233,
+        272,273,274,275,276,277,278,279,280,281,282,283,
+        257,256,255
+      ]
+
+    },
+
+    "FIN": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Finland",
+
+      "location": {
+        "name": [566, 226],
+        "unit": [580, 195]
+      },
+
+      "borders": [
+        131,130,129,128,127,126,125,124,123,122,121,120,119,118,117,116,115,114,
+        174,175,176,177,178,179,180,
+        153,
+        152
+      ]
+
+    },
+
+    "GAL": {
+
+      "type": "land",
+
+      "is_supply_centre": false,
+
+      "full_name": "Galicia",
+
+      "location": {
+        "name": [537, 488],
+        "unit": [572, 495]
+      },
+
+      "borders": [
+        304,303,302,301,300,299,
+        396,395,394,
+        397,398,399,400,401,402,403,404,
+        344, 343
+      ]
+
+    },
+
+    "GAS": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Gascony",
+
+      "location": {
+        "name": [214, 569],
+        "unit": [228, 554]
+      },
+
+      "borders": [
+        337, 336,
+        439,438,437,436,435,
+        441,442,443,444,445,446,447,448
+      ]
+
+    },
+
+    "GRE": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Greece",
+
+      "location": {
+        "name": [530, 696],
+        "unit": [543, 710],
+        "supply": [566, 720]
+      },
+
+      "borders": [
+        597, 596,
+        590,589,588,587,
+        695,694,693,692,691,690,689,688,687,686,685,684,683,682,681,680,
+        696,697,698,699,700,701,702,703,704,705,706,707,708,709,710
+      ]
+
+    },
+
+    "HEL": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Heligoland Bight",
+
+      "location": {
+        "name": [343, 375],
+        "unit": [355, 360]
+      },
+
+      "borders": [
+        229,
+        222,223,224,225,226,227,228
+      ]
+
+    },
+
+    "HOL": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Holland",
+
+      "location": {
+        "name": [331, 412],
+        "unit": [326, 419],
+        "supply": [319, 404]
+      },
+
+      "borders": [
+        227, 226,
+        324,323,322,321,
+        325, 326, 327,
+        232, 231, 230
+      ]
+
+    },
+
+    "ION": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Ionian Sea",
+
+      "location": {
+        "name": [477, 740],
+        "unit": [471, 771]
+      },
+
+      "borders": [
+        720,719,718,717,
+        713, 711,
+        709,708,707,706,705,704,703,702,701,700,699,698,697,696,
+        680,
+        754, 753, 752,
+        658, 657,
+        751, 750, 749,
+        740, 739,
+        760, 759,
+        733, 732,
+        758,757,756,755
+      ]
+
+    },
+
+    "IRI": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Irish Sea",
+
+      "location": {
+        "name": [160, 387],
+        "unit": [170, 390]
+      },
+
+      "borders": [
+        26, 25,
+        271,270,269,268,
+        11, 10,
+        267,266,265,264,263,262,261,260,259,258,257,
+        283
+      ]
+
+    },
+
+    "KIE": {
+
+      "type": "canal",
+
+      "is_supply_centre": true,
+
+      "full_name": "Kiel",
+
+      "location": {
+        "name": [369, 404],
+        "unit": [378, 424],
+        "supply": [393, 399]
+      },
+
+      "borders": [
+        226,225,224,223,222,
+        215,214,213,212,211,
+        317,316,315,314,313,
+        318,319,320,321,322,323,324
+      ],
+
+      "canal_points": [
+        779, 780, 781, 214, 782, 783
+      ]
+
+    },
+
+    "LON": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "London",
+
+      "location": {
+        "name": [258, 397],
+        "unit": [262, 405],
+        "supply": [254, 414]
+      },
+
+      "borders": [
+        239,238,237,236,235,234,
+        249,250,251
+      ]
+
+    },
+
+    "LVN": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Livonia",
+
+      "location": {
+        "name": [572, 369],
+        "unit": [577, 349]
+      },
+
+      "borders": [
+        108,107,106,
+        187,188,189,190,191,192,193,194,195,196,197,198,
+        186,185,184,183,182,181
+      ]
+
+    },
+
+    "LVP": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Liverpool",
+
+      "location": {
+        "name": [224, 317],
+        "unit": [235, 346],
+        "supply": [234, 363]
+      },
+
+      "borders": [
+        10,9,8,7,
+        247,246,245,
+        254,253,252,
+        263,264,265,266,267
+      ]
+
+    },
+
+    "LYO": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Gulf of Lyon",
+
+      "location": {
+        "name": [271, 649],
+        "unit": [300, 630]
+      },
+
+      "borders": [
+        544,543,542,541,540,
+        623, 622,
+        624,625,626,627,628,629,630,631,632,633,634,
+        550,549,548,547,546
+      ]
+
+    },
+
+    "MAO": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Mid-Atlantic Ocean",
+
+      "location": {
+        "name": [97, 503],
+        "unit": [88, 458]
+      },
+
+      "borders": [
+        27, 26,
+        283, 282,
+        342,341,340,339,338,337,
+        448, 447, 446,
+        449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473
+      ]
+
+    },
+
+    "MAR": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Marseilles",
+
+      "location": {
+        "name": [277, 583],
+        "unit": [294, 576],
+        "supply": [302, 589]
+      },
+
+      "borders": [
+        435,434,433,432,431,
+        535, 534, 533,
+        536,537,538,539,540,541,542,543,544,545,
+        442, 441
+      ]
+
+    },
+
+    "MOS": {
+
+      "type": "land",
+
+      "is_supply_centre": true,
+
+      "full_name": "Moscow",
+
+      "location": {
+        "name": [684, 375],
+        "unit": [752, 325],
+        "supply": [717, 336]
+      },
+
+      "borders": [
+        106,105,104,103,102,101,100,99,98,97,96,95,94,
+        284,285,286,287,288,289,290,291,292,293,294,295,296,297,298,
+        191,190,189,188,187
+      ]
+
+    },
+
+    "MUN": {
+
+      "type": "land",
+
+      "is_supply_centre": true,
+
+      "full_name": "Munich",
+
+      "location": {
+        "name": [366, 513],
+        "unit": [378, 498],
+        "supply": [399, 514]
+      },
+
+      "borders": [
+        318,
+        313, 312,
+        349, 348,
+        413,412,411,410,409,408,
+        414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429
+      ]
+
+    },
+
+    "NAF": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "North Africa",
+
+      "location": {
+        "name": [216, 762],
+        "unit": [185, 760]
+      },
+
+      "borders": [
+        654,653,652,651,650,649,648,647,646,645,644,643,642,
+        655, 656,
+        473,472,471,470
+      ]
+
+    },
+
+    "NAO": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "North Atlantic Ocean",
+
+      "location": {
+        "name": [120, 255],
+        "unit": [128, 225]
+      },
+
+      "borders": [
+
+        0,
+
+        1,
+
+        2,
+
+        3,
+
+        4,
+
+        5,
+
+        6,
+
+        7,
+
+        8,
+
+        9,
+
+        10,
+
+        11,
+
+        12,
+
+        13,
+
+        14,
+
+        15,
+
+        16,
+
+        17,
+
+        18,
+
+        19,
+
+        20,
+
+        21,
+
+        22,
+
+        23,
+
+        24,
+
+        25,
+
+        26,
+
+        27
+
+      ]
+
+    },
+
+    "NAP": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Naples",
+
+      "location": {
+        "name": [448, 700],
+        "unit": [458, 723],
+        "supply": [428, 671]
+      },
+
+      "borders": [
+        722,721,720,
+        755,756,757,758,
+        732,731,730,729,
+        724
+      ]
+
+    },
+
+    "NTH": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "North Sea",
+
+      "location": {
+        "name": [298, 326],
+        "unit": [315, 303]
+      },
+
+      "borders": [
+        42,41,40,39,
+        151,150,149,148,147,146,
+        221, 220,
+        229, 228, 227,
+        230,231,232,233,234,235,236,237,238,239,240,241,242,243,244
+      ]
+
+    },
+
+    "NWG": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Norwegian Sea",
+
+      "location": {
+        "name": [339, 100],
+        "unit": [372, 138]
+      },
+
+      "borders": [
+
+        1,
+
+        28,
+
+        29,
+
+        30,
+
+        31,
+
+        32,
+
+        33,
+
+        34,
+
+        35,
+
+        36,
+
+        37,
+
+        38,
+
+        39,
+
+        40,
+
+        41,
+
+        42,
+
+        43,
+
+        44,
+
+        45,
+
+        46,
+
+        2
+
+      ]
+
+    },
+
+    "NWY": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Norway",
+
+      "location": {
+        "name": [384, 248],
+        "unit": [408, 226],
+        "supply": [411, 265]
+      },
+
+      "borders": [
+        39,38,37,36,35,34,33,32,31,30,29,
+        92,91,90,89,88,87,86,85,84,83,82,
+        123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151
+      ]
+
+    },
+
+    "PAR": {
+
+      "type": "land",
+
+      "is_supply_centre": true,
+
+      "full_name": "Paris",
+
+      "location": {
+        "name": [252, 509],
+        "unit": [263, 496],
+        "supply": [284, 484]
+      },
+
+      "borders": [
+        336,335,334,333,332,
+        440, 439
+      ]
+
+    },
+
+    "PIC": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Picardy",
+
+      "location": {
+        "name": [272, 461],
+        "unit": [272, 459]
+      },
+
+      "borders": [
+        275,274,273,272,
+        331, 330,
+        332,333,334,335
+      ]
+
+    },
+
+    "PIE": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Piedmont",
+
+      "location": {
+        "name": [339, 578],
+        "unit": [348, 573]
+      },
+
+      "borders": [
+        533,532,531,530,
+        526, 525,
+        621, 620,
+        622, 623,
+        540,539,538,537,536
+      ]
+
+    },
+
+    "POR": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Portugal",
+
+      "location": {
+        "name": [63, 625],
+        "unit": [75, 608],
+        "supply": [49, 617]
+      },
+
+      "borders": [
+        569,568,567,566,565,564,563,562,561,560,559,
+        467,466,465,464,463,462,461,460,459,458,457
+      ]
+
+    },
+
+    "PRU": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Prussia",
+
+      "location": {
+        "name": [508, 402],
+        "unit": [496, 404]
+      },
+
+      "borders": [
+        197,196,195,194,193,192,
+        308,307,306,305,
+        309, 310, 311,
+        207,206,205,204,203,202,201,200,199
+      ]
+
+    },
+
+    "ROM": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Rome",
+
+      "location": {
+        "name": [401, 649],
+        "unit": [397, 638],
+        "supply": [413, 641]
+      },
+
+      "borders": [
+        617, 616,
+        723, 722,
+        724,725,726,727,728
+      ]
+
+    },
+
+    "RUH": {
+
+      "type": "land",
+
+      "is_supply_centre": false,
+
+      "full_name": "Ruhr",
+
+      "location": {
+        "name": [333, 471],
+        "unit": [350, 460]
+      },
+
+      "borders": [
+        321,320,319,318,
+        429, 428, 427,
+        430,
+        329, 328,
+        325
+      ]
+
+    },
+
+    "RUM": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Rumania",
+
+      "location": {
+        "name": [611, 590],
+        "unit": [624, 580],
+        "supply": [600, 587]
+      },
+
+      "borders": [
+        398, 397,
+        394,393,392,
+        386, 385, 384,
+        492, 491, 490,
+        493,494,495,496,497,498,499,500,501,502,503,504,505,506
+      ]
+
+    },
+
+    "SER": {
+
+      "type": "land",
+
+      "is_supply_centre": true,
+
+      "full_name": "Serbia",
+
+      "location": {
+        "name": [529, 640],
+        "unit": [533, 624],
+        "supply": [516, 596]
+      },
+
+      "borders": [
+        509, 508, 507,
+        501, 500,
+        595,594,593,592,591,590,
+        596,597,598,599,600,601,602
+      ]
+
+    },
+
+    "SEV": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Sevastopol",
+
+      "location": {
+        "name": [799, 498],
+        "unit": [765, 475],
+        "supply": [714, 562]
+      },
+
+      "borders": [
+        295,294,293,292,291,290,289,288,287,286,285,284,
+        350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391
+      ]
+
+    },
+
+    "SIL": {
+
+      "type": "land",
+
+      "is_supply_centre": false,
+
+      "full_name": "Silesia",
+
+      "location": {
+        "name": [469, 461],
+        "unit": [473, 452]
+      },
+
+      "borders": [
+    	309,
+        305, 304,
+        343,344,345,346,347,348,349,
+        312
+      ]
+
+    },
+
+    "SKA": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Skagerrak",
+
+      "location": {
+        "name": [392, 310],
+        "unit": [412, 306]
+      },
+
+      "borders": [
+        146,145,144,143,142,
+        173, 172, 171,
+        218,219,220,221
+      ]
+
+    },
+
+    "SMY": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Smyrna",
+
+      "location": {
+        "name": [682, 725],
+        "unit": [730, 723],
+        "supply": [635, 718]
+      },
+
+      "borders": [
+        578,577,576,575,
+        573,572,571,570,
+        770, 769, 768,
+        479,478,477,476,
+        767, 766, 765,
+        671,670,669,668,667,666,665,664,663,662,661,
+        672,673,674,675,676,677
+      ]
+
+    },
+
+    "SPA": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Spain",
+
+      "location": {
+        "name": [150, 640],
+        "unit": [166, 621],
+        "supply": [140, 613]
+      },
+
+      "borders": [
+        457,456,455,454,453,452,451,450,449,
+        446,445,444,443,442,
+        545, 544,
+        546,547,548,549,550,551,552,553,554,555,556,557,558,
+        469, 468, 467,
+        559,560,561,562,563,564,565,566,567,568,569
+      ],
+
+      "coasts": [
+
+        {
+
+          "label": "nc",
+
+          "rel_location": [-4, -64]
+
+        },
+
+        {
+
+          "label": "sc",
+
+          "rel_location": [-40, 38]
+
+        }
+
+      ]
+
+    },
+
+    "STP": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "St Petersburg",
+
+      "location": {
+        "name": [686, 211],
+        "unit": [653, 224],
+        "supply": [627, 269]
+      },
+
+      "borders": [
+
+        47,
+
+        93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,
+
+        82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60,59,58,57,56,55,54,53,52,51,50,49,48
+
+      ],
+
+      "coasts": [
+
+        {
+
+          "label": "nc",
+
+          "rel_location": [21, -36]
+
+        },
+
+        {
+
+          "label": "sc",
+
+          "rel_location": [-56, 82]
+
+        }
+
+      ]
+
+    },
+
+    "SWE": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Sweden",
+
+      "location": {
+        "name": [454, 242],
+        "unit": [459, 283],
+        "supply": [488, 277]
+      },
+
+      "borders": [
+        142,141,140,139,138,137,136,135,134,133,132,131,
+        152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173
+      ]
+
+    },
+
+    "SYR": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Syria",
+
+      "location": {
+        "name": [843, 761],
+        "unit": [841, 733]
+      },
+
+      "borders": [
+        476, 475, 474,
+        771,
+        761,762,763,764,765,766,767
+      ]
+
+    },
+
+    "TRI": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Trieste",
+
+      "location": {
+        "name": [467, 603],
+        "unit": [467, 591],
+        "supply": [445, 567]
+      },
+
+      "borders": [
+        520, 519,
+        517, 516,
+        513,512,511,510,509,
+        602, 601, 600,
+        603,604,605,606,607,608,609,610,611
+      ]
+
+    },
+
+    "TUN": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Tunis",
+
+      "location": {
+        "name": [328, 783],
+        "unit": [335, 775],
+        "supply": [340, 752]
+      },
+
+      "borders": [
+        642,641,640,639,
+        743,742,741,740,
+        749, 750, 751,
+        656, 655
+      ]
+
+    },
+
+    "TUS": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Tuscany",
+
+      "location": {
+        "name": [372, 604],
+        "unit": [383, 613]
+      },
+
+      "borders": [
+        622,
+        620,619,618,617,
+        728, 727,
+        624
+      ]
+
+    },
+
+    "TYR": {
+
+      "type": "land",
+
+      "is_supply_centre": false,
+
+      "full_name": "Tyrolia",
+
+      "location": {
+        "name": [394, 540],
+        "unit": [418, 539]
+      },
+
+      "borders": [
+        421,420,419,418,417,416,415,414,
+        408, 407,
+        518, 517,
+        519,520,521,522,523,524,525,526,527,528,529
+      ]
+
+    },
+
+    "TYS": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Tyrrhenian Sea",
+
+      "location": {
+        "name": [378, 704],
+        "unit": [388, 685]
+      },
+
+      "borders": [
+        625, 624,
+        727,726,725,724,
+        729,730,731,732,733,734,735,736,737,738,739,740,741,742,743,
+        639, 638,
+        744,745,746,
+        629, 628,
+        747, 748
+      ]
+
+    },
+
+    "UKR": {
+
+      "type": "land",
+
+      "is_supply_centre": false,
+
+      "full_name": "Ukraine",
+
+      "location": {
+        "name": [629, 483],
+        "unit": [642, 466]
+      },
+
+      "borders": [
+        299,298,297,296,295,
+        391,390,389,388,387,386,
+        392,393,394,395,396
+      ]
+
+    },
+
+    "VEN": {
+
+      "type": "coast",
+
+      "is_supply_centre": true,
+
+      "full_name": "Venice",
+
+      "location": {
+        "name": [378, 579],
+        "unit": [389, 584],
+        "supply": [406, 558]
+      },
+
+      "borders": [
+        525,524,523,522,521,520,
+        611, 610,
+        612,613,614,615,616,617,618,619,620,621
+      ]
+
+    },
+
+    "VIE": {
+
+      "type": "land",
+
+      "is_supply_centre": true,
+
+      "full_name": "Vienna",
+
+      "location": {
+        "name": [469, 524],
+        "unit": [480, 516],
+        "supply": [456, 520]
+      },
+
+      "borders": [
+        407,406,405,404,403,
+        515, 514, 513,
+        516,517,518
+      ]
+
+    },
+
+    "WAL": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "Wales",
+
+      "location": {
+        "name": [215, 390],
+        "unit": [231, 395]
+      },
+
+      "borders": [
+        252,251,250,249,
+        255,256,257,258,259,260,261,262,263
+      ]
+
+    },
+
+    "WAR": {
+
+      "type": "land",
+
+      "is_supply_centre": true,
+
+      "full_name": "Warsaw",
+
+      "location": {
+        "name": [535, 432],
+        "unit": [546, 452],
+        "supply": [520, 433]
+      },
+
+      "borders": [
+        192, 191,
+        298,299,300,301,302,303,304,305,306,307,308
+      ]
+
+    },
+
+    "WES": {
+
+      "type": "ocean",
+
+      "is_supply_centre": false,
+
+      "full_name": "Western Mediterranean",
+
+      "location": {
+        "name": [254, 698],
+        "unit": [235, 700]
+      },
+
+      "borders": [
+        634, 635,
+        632, 631,
+        636,637,638,639,640,641,642,643,644,645,646,647,648,649,650,651,652,653,654,
+        470, 469,
+        558,557,556,555,554,553,552,551,550
+      ]
+
+    },
+
+    "YOR": {
+
+      "type": "coast",
+
+      "is_supply_centre": false,
+
+      "full_name": "York",
+
+      "location": {
+        "name": [251, 361],
+        "unit": [262, 358]
+      },
+
+      "borders": [
+        242,241,240,239,
+        251,252,253,254,
+        245
+      ]
+
+    }
+
+  },
+
+  "starting_builds": [
+    {
+      "team_name": "Turkey",
+      "builds": [
+        {
+          "location": "ANK",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "CON",
+          "unit_type": "Army"
+        },
+        {
+          "location": "SMY",
+          "unit_type": "Army"
+        }
+      ]
+    },
+    {
+      "team_name": "Austria",
+      "builds": [
+        {
+          "location": "TRI",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "VIE",
+          "unit_type": "Army"
+        },
+        {
+          "location": "BUD",
+          "unit_type": "Army"
+        }
+      ]
+    },
+    {
+      "team_name": "Italy",
+      "builds": [
+        {
+          "location": "NAP",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "ROM",
+          "unit_type": "Army"
+        },
+        {
+          "location": "VEN",
+          "unit_type": "Army"
+        }
+      ]
+    },
+    {
+      "team_name": "France",
+      "builds": [
+        {
+          "location": "BRE",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "PAR",
+          "unit_type": "Army"
+        },
+        {
+          "location": "MAR",
+          "unit_type": "Army"
+        }
+      ]
+    },
+    {
+      "team_name": "England",
+      "builds": [
+        {
+          "location": "EDI",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "LON",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "LVP",
+          "unit_type": "Army"
+        }
+      ]
+    },
+    {
+      "team_name": "Germany",
+      "builds": [
+        {
+          "location": "KIE",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "BER",
+          "unit_type": "Army"
+        },
+        {
+          "location": "MUN",
+          "unit_type": "Army"
+        }
+      ]
+    },
+    {
+      "team_name": "Russia",
+      "builds": [
+        {
+          "location": "STP-sc",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "SEV",
+          "unit_type": "Fleet"
+        },
+        {
+          "location": "MOS",
+          "unit_type": "Army"
+        },
+        {
+          "location": "WAR",
+          "unit_type": "Army"
+        }
+      ]
+    }
+  ],
+
+  "border_points": [
+
+    [0,0],
+    [243, 0],
+    [243,255],
+    [231,262],
+    [230,272],
+
+    [216,283],
+    [217,299],
+    [228,307],
+    [229,312],
+    [217,321],
+
+    [217,326],
+    [202,326],
+    [202,312],
+    [188,305],
+    [175,305],
+
+    [166,310],
+    [167,317],
+    [157,317],
+    [143,313],
+    [145,324],
+
+    [138,328],
+    [148,336],
+    [133,352],
+    [127,348],
+    [124,358],
+
+    [132,374],
+    [114,392],
+    [0,392],
+    [548, 0],
+    [548, 49],
+
+    [540, 58],
+    [493, 79],
+    [473, 109],
+    [472, 121],
+    [464, 125],
+
+    [427, 190],
+    [415, 193],
+    [408, 205],
+    [399, 203],
+    [368, 222],
+
+    [313, 222],
+    [275, 260],
+    [275, 283],
+    [249, 278],
+    [250, 271],
+
+    [261, 266],
+    [262, 260],
+    [802, 0],
+    [794, 16],
+    [787, 11],
+
+    [768, 29],
+    [764, 55],
+    [762, 35],
+    [753, 32],
+    [733, 71],
+
+    [737, 87],
+    [711, 82],
+    [717, 74],
+    [706, 64],
+    [695, 66],
+
+    [703, 90],
+    [712, 96],
+    [712, 109],
+    [700, 104],
+    [683, 132],
+
+    [700, 146],
+    [690, 157],
+    [664, 146],
+    [661, 160],
+    [678, 172],
+
+    [676, 176],
+    [650, 171],
+    [639, 151],
+    [638, 136],
+    [622, 128],
+
+    [619, 121],
+    [666, 122],
+    [683, 115],
+    [685, 96],
+    [625, 69],
+
+    [608, 72],
+    [603, 66],
+    [597, 71],
+    [588, 70],
+    [597, 59],
+
+    [578, 50],
+    [576, 60],
+    [573, 49],
+    [568, 47],
+    [564, 57],
+
+    [560, 49],
+    [553, 63],
+    [553, 49],
+    [899, 0],
+    [899, 170],
+
+    [848, 206],
+    [834, 229],
+    [764, 242],
+    [729, 265],
+    [709, 263],
+
+    [683, 279],
+    [682, 302],
+    [674, 306],
+    [668, 300],
+    [656, 304],
+
+    [632, 329],
+    [614, 328],
+    [593, 295],
+    [558, 290],
+    [560, 284],
+
+    [600, 283],
+    [602, 276],
+    [613, 269],
+    [621, 269],
+    [604, 255],
+
+    [619, 231],
+    [616, 219],
+    [622, 213],
+    [604, 170],
+    [603, 159],
+
+    [590, 134],
+    [591, 106],
+    [583, 100],
+    [584, 89],
+    [580, 85],
+
+    [584, 80],
+    [572, 71],
+    [559, 73],
+    [557, 90],
+    [536, 91],
+
+    [524, 79],
+    [518, 90],
+    [502, 94],
+    [505, 108],
+    [493, 103],
+
+    [470, 155],
+    [472, 168],
+    [460, 191],
+    [448, 192],
+    [445, 237],
+
+    [437, 244],
+    [440, 255],
+    [424, 292],
+    [416, 277],
+    [411, 289],
+
+    [381, 302],
+    [375, 300],
+    [360, 289],
+    [357, 276],
+    [363, 268],
+
+    [363, 241],
+    [369, 230],
+    [539, 104],
+    [547, 154],
+    [537, 150],
+
+    [526, 175],
+    [532, 185],
+    [502, 210],
+    [488, 232],
+    [488, 262],
+
+    [496, 264],
+    [503, 277],
+    [499, 292],
+    [479, 300],
+    [475, 316],
+
+    [476, 330],
+    [466, 350],
+    [450, 351],
+    [444, 364],
+    [433, 363],
+
+    [430, 356],
+    [429, 349],
+    [434, 340],
+    [425, 322],
+    [551, 275],
+
+    [529, 264],
+    [530, 236],
+    [524, 219],
+    [553, 175],
+    [561, 173],
+
+    [556, 157],
+    [552, 293],
+    [562, 306],
+    [562, 317],
+    [569, 326],
+
+    [553, 328],
+    [544, 316],
+    [608, 341],
+    [608, 394],
+    [590, 399],
+
+    [586, 409],
+    [571, 415],
+    [552, 404],
+    [554, 381],
+    [547, 373],
+
+    [539, 375],
+    [536, 360],
+    [526, 349],
+    [529, 328],
+    [527, 364],
+
+    [521, 376],
+    [511, 378],
+    [507, 392],
+    [498, 393],
+    [496, 380],
+
+    [478, 381],
+    [468, 392],
+    [450, 394],
+    [439, 393],
+    [440, 383],
+
+    [430, 382],
+    [411, 394],
+    [403, 393],
+    [403, 387],
+    [396, 382],
+
+    [393, 365],
+    [410, 365],
+    [417, 373],
+    [414, 348],
+    [411, 320],
+
+    [385, 321],
+    [375, 321],
+    [379, 364],
+    [379, 392],
+    [366, 397],
+
+    [364, 392],
+    [354, 394],
+    [332, 393],
+    [332, 340],
+    [380, 340],
+
+    [325, 400],
+    [323, 396],
+    [304, 429],
+    [278, 431],
+    [271, 425],
+
+    [276, 421],
+    [267, 420],
+    [282, 406],
+    [284, 387],
+    [269, 385],
+
+    [274, 361],
+    [264, 343],
+    [264, 324],
+    [260, 309],
+    [271, 297],
+
+    [252, 328],
+    [237, 312],
+    [237, 306],
+    [240, 288],
+    [241, 423],
+
+    [238, 402],
+    [250, 389],
+    [245, 379],
+    [246, 355],
+    [252, 343],
+
+    [208, 417],
+    [202, 423],
+    [175, 417],
+    [204, 403],
+    [216, 404],
+
+    [212, 395],
+    [196, 390],
+    [195, 380],
+    [213, 375],
+    [205, 368],
+
+    [224, 357],
+    [229, 344],
+    [225, 328],
+    [188, 333],
+    [187, 353],
+
+    [171, 372],
+    [155, 369],
+    [273, 445],
+    [249, 451],
+    [252, 459],
+
+    [245, 457],
+    [237, 456],
+    [234, 446],
+    [225, 444],
+    [226, 467],
+
+    [208, 462],
+    [205, 455],
+    [177, 454],
+    [157, 434],
+    [899, 473],
+
+    [882, 473],
+    [842, 460],
+    [835, 437],
+    [821, 435],
+    [813, 407],
+
+    [781, 412],
+    [766, 410],
+    [751, 402],
+    [736, 423],
+    [711, 415],
+
+    [698, 423],
+    [682, 419],
+    [587, 438],
+    [581, 442],
+    [577, 468],
+
+    [572, 464],
+    [554, 471],
+    [539, 463],
+    [522, 475],
+    [505, 472],
+
+    [487, 434],
+    [496, 419],
+    [517, 412],
+    [523, 415],
+    [453, 430],
+
+    [455, 424],
+    [448, 416],
+    [440, 438],
+    [406, 444],
+    [403, 424],
+
+    [407, 420],
+    [404, 411],
+    [411, 406],
+    [377, 461],
+    [374, 452],
+
+    [362, 441],
+    [335, 433],
+    [338, 426],
+    [345, 427],
+    [352, 419],
+
+    [328, 451],
+    [323, 445],
+    [325, 438],
+    [330, 467],
+    [323, 474],
+
+    [305, 463],
+    [294, 451],
+    [299, 476],
+    [276, 470],
+    [268, 474],
+
+    [243, 471],
+    [239, 522],
+    [213, 520],
+    [206, 510],
+    [207, 492],
+
+    [186, 471],
+    [179, 470],
+    [174, 461],
+    [501, 484],
+    [489, 486],
+
+    [478, 475],
+    [474, 479],
+    [454, 461],
+    [442, 460],
+    [436, 450],
+
+    [899, 630],
+    [878, 628],
+    [871, 632],
+    [843, 611],
+    [847, 596],
+
+    [839, 584],
+    [820, 581],
+    [783, 563],
+    [767, 562],
+    [759, 553],
+
+    [760, 548],
+    [766, 550],
+    [773, 531],
+    [768, 531],
+    [763, 522],
+
+    [783, 507],
+    [780, 503],
+    [723, 540],
+    [735, 554],
+    [752, 550],
+
+    [754, 557],
+    [739, 561],
+    [735, 567],
+    [726, 568],
+    [724, 578],
+
+    [711, 574],
+    [711, 566],
+    [698, 560],
+    [712, 549],
+    [709, 545],
+
+    [694, 548],
+    [685, 542],
+    [688, 539],
+    [667, 541],
+    [655, 568],
+
+    [640, 571],
+    [634, 538],
+    [647, 532],
+    [650, 515],
+    [687, 494],
+
+    [696, 439],
+    [701, 434],
+    [622, 533],
+    [617, 517],
+    [606, 515],
+
+    [600, 484],
+    [580, 476],
+    [607, 531],
+    [593, 538],
+    [579, 522],
+
+    [569, 520],
+    [569, 515],
+    [530, 497],
+    [511, 501],
+    [490, 497],
+
+    [464, 495],
+    [451, 500],
+    [448, 511],
+    [431, 510],
+    [425, 496],
+
+    [413, 492],
+    [407, 472],
+    [410, 465],
+    [428, 466],
+    [423, 519],
+
+    [414, 518],
+    [418, 530],
+    [413, 527],
+    [388, 531],
+    [382, 528],
+
+    [378, 530],
+    [365, 524],
+    [361, 519],
+    [353, 518],
+    [348, 523],
+
+    [329, 520],
+    [335, 504],
+    [332, 495],
+    [344, 493],
+    [369, 461],
+
+    [322, 484],
+    [308, 546],
+    [285, 546],
+    [285, 559],
+    [278, 567],
+
+    [271, 566],
+    [263, 554],
+    [267, 548],
+    [256, 544],
+    [254, 535],
+
+    [295, 493],
+    [244, 576],
+    [234, 596],
+    [223, 593],
+    [223, 597],
+
+    [193, 583],
+    [191, 571],
+    [206, 550],
+    [204, 547],
+    [168, 568],
+
+    [116, 545],
+    [108, 536],
+    [100, 535],
+    [96, 541],
+    [88, 537],
+
+    [79, 545],
+    [82, 550],
+    [77, 567],
+    [75, 580],
+    [57, 610],
+
+    [51, 610],
+    [45, 620],
+    [53, 630],
+    [49, 643],
+    [50, 649],
+
+    [43, 661],
+    [58, 671],
+    [70, 669],
+    [78, 679],
+    [84, 701],
+
+    [84, 707],
+    [56, 741],
+    [31, 744],
+    [0, 799],
+    [899, 705],
+
+    [863, 683],
+    [833, 686],
+    [833, 673],
+    [824, 668],
+    [822, 658],
+
+    [822, 626],
+    [772, 631],
+    [764, 626],
+    [759, 630],
+    [746, 620],
+
+    [717, 626],
+    [693, 654],
+    [661, 657],
+    [638, 644],
+    [637, 611],
+
+    [644, 605],
+    [647, 585],
+    [657, 578],
+    [634, 601],
+    [614, 601],
+
+    [599, 611],
+    [588, 608],
+    [576, 611],
+    [567, 606],
+    [559, 608],
+
+    [555, 603],
+    [552, 589],
+    [555, 579],
+    [603, 575],
+    [609, 567],
+
+    [603, 551],
+    [594, 547],
+    [518, 587],
+    [513, 590],
+    [504, 587],
+
+    [491, 584],
+    [489, 569],
+    [474, 564],
+    [471, 548],
+    [475, 537],
+
+    [490, 530],
+    [457, 551],
+    [450, 544],
+    [452, 518],
+    [443, 551],
+
+    [425, 552],
+    [413, 551],
+    [399, 555],
+    [394, 564],
+    [387, 568],
+
+    [382, 561],
+    [377, 555],
+    [380, 550],
+    [375, 540],
+    [365, 535],
+
+    [358, 553],
+    [355, 560],
+    [346, 552],
+    [326, 553],
+    [321, 543],
+
+    [312, 551],
+    [322, 557],
+    [327, 567],
+    [318, 571],
+    [321, 586],
+
+    [331, 595],
+    [299, 604],
+    [272, 590],
+    [256, 598],
+    [257, 608],
+
+    [251, 611],
+    [255, 618],
+    [240, 627],
+    [218, 628],
+    [189, 659],
+
+    [195, 671],
+    [184, 678],
+    [171, 692],
+    [160, 690],
+    [154, 694],
+
+    [150, 707],
+    [117, 694],
+    [106, 699],
+    [96, 698],
+    [83, 653],
+
+    [80, 639],
+    [89, 630],
+    [84, 617],
+    [92, 618],
+    [106, 589],
+
+    [119, 588],
+    [120, 582],
+    [109, 572],
+    [91, 571],
+    [93, 566],
+
+    [744, 689],
+    [730, 686],
+    [706, 702],
+    [696, 702],
+    [698, 659],
+
+    [675, 707],
+    [646, 705],
+    [634, 696],
+    [626, 700],
+    [626, 695],
+
+    [614, 697],
+    [615, 690],
+    [621, 679],
+    [613, 672],
+    [620, 664],
+
+    [619, 649],
+    [602, 669],
+    [590, 675],
+    [584, 658],
+    [569, 664],
+
+    [557, 663],
+    [551, 659],
+    [560, 652],
+    [553, 628],
+    [559, 627],
+
+    [551, 609],
+    [539, 673],
+    [530, 673],
+    [525, 667],
+    [525, 647],
+
+    [511, 637],
+    [497, 613],
+    [502, 607],
+    [502, 637],
+    [502, 649],
+
+    [443, 597],
+    [439, 575],
+    [434, 575],
+    [428, 586],
+    [424, 577],
+
+    [424, 571],
+    [429, 557],
+    [404, 574],
+    [403, 596],
+    [419, 607],
+
+    [427, 634],
+    [422, 639],
+    [406, 620],
+    [392, 598],
+    [373, 594],
+
+    [368, 588],
+    [363, 578],
+    [363, 593],
+    [348, 587],
+    [370, 616],
+
+    [351, 617],
+    [332, 624],
+    [335, 645],
+    [342, 649],
+    [343, 656],
+
+    [325, 662],
+    [324, 666],
+    [250, 667],
+    [242, 662],
+    [234, 671],
+
+    [245, 674],
+    [322, 693],
+    [328, 703],
+    [342, 700],
+    [342, 737],
+
+    [333, 739],
+    [328, 744],
+    [321, 744],
+    [288, 736],
+    [272, 741],
+
+    [246, 731],
+    [197, 727],
+    [173, 736],
+    [158, 732],
+    [144, 743],
+
+    [129, 738],
+    [129, 730],
+    [123, 735],
+    [98, 728],
+    [90, 706],
+
+    [312, 753],
+    [310, 799],
+    [601, 799],
+    [601, 791],
+    [621, 789],
+
+    [623, 785],
+    [651, 757],
+    [660, 752],
+    [669, 755],
+    [677, 764],
+
+    [693, 759],
+    [695, 745],
+    [710, 744],
+    [731, 757],
+    [751, 752],
+
+    [760, 735],
+    [773, 739],
+    [652, 748],
+    [640, 749],
+    [635, 729],
+
+    [626, 724],
+    [626, 713],
+    [629, 707],
+    [618, 781],
+    [582, 780],
+
+    [567, 767],
+    [560, 744],
+    [570, 745],
+    [569, 734],
+    [581, 737],
+
+    [580, 727],
+    [559, 706],
+    [560, 702],
+    [570, 706],
+    [556, 691],
+
+    [560, 683],
+    [571, 692],
+    [576, 690],
+    [575, 683],
+    [582, 683],
+
+    [573, 675],
+    [555, 759],
+    [555, 767],
+    [545, 755],
+    [543, 762],
+
+    [540, 744],
+    [530, 734],
+    [536, 729],
+    [560, 730],
+    [554, 725],
+
+    [533, 726],
+    [526, 715],
+    [530, 712],
+    [524, 712],
+    [514, 696],
+
+    [530, 683],
+    [509, 686],
+    [503, 683],
+    [490, 686],
+    [454, 652],
+
+    [459, 647],
+    [444, 648],
+    [490, 693],
+    [484, 693],
+    [473, 687],
+
+    [465, 692],
+    [448, 687],
+    [429, 655],
+    [430, 645],
+    [418, 663],
+
+    [397, 655],
+    [384, 638],
+    [383, 632],
+    [387, 627],
+    [424, 677],
+
+    [445, 696],
+    [450, 719],
+    [444, 730],
+    [438, 731],
+    [437, 726],
+
+    [425, 730],
+    [405, 729],
+    [399, 725],
+    [391, 726],
+    [384, 733],
+
+    [368, 749],
+    [364, 747],
+    [350, 754],
+    [350, 741],
+    [346, 700],
+
+    [351, 669],
+    [348, 656],
+    [350, 644],
+    [352, 636],
+    [352, 765],
+
+    [365, 788],
+    [363, 799],
+    [579, 787],
+    [573, 782],
+    [577, 778],
+
+    [474, 702],
+    [471, 715],
+    [452, 736],
+    [444, 734],
+    [432, 760],
+
+    [420, 759],
+    [784, 799],
+    [789, 765],
+    [781, 757],
+    [779, 740],
+
+    [786, 727],
+    [794, 706],
+    [809, 694],
+    [810, 661],
+    [788, 657],
+
+    [755, 686],
+    [899, 799],
+    [616, 675],
+    [628, 666],
+    [635, 656],
+
+    [647, 649],
+    [654, 653],
+    [642, 661],
+    [635, 671],
+    [379, 385],
+
+    [379, 378],
+    [396, 377],
+    [399, 384],
+    [389, 386]
+  ]
+
+}
