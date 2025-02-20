@@ -1,0 +1,911 @@
+{
+  "sections": [
+    {
+      "title": "6.A BASIC CHECKS",
+      "tests": [
+        {
+          "title": "6.A.1",
+          "desc": "Check that an illegal move (without convoy) will fail",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "NTH",
+              "team": "ENGLAND"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F NTH -> PIC"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.2",
+          "desc": "Check that an army cannot be moved to open sea",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "LVP",
+              "team": "ENGLAND"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "A LVP -> IRI"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.3",
+          "desc": "Check that a fleet cannot be moved to land (non-coastal)",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "KIE",
+              "team": "GERMANY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "F KIE -> MUN"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.4",
+          "desc": "Check that a unit cannot be moved to its own space",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "KIE",
+              "team": "GERMANY"
+            },
+            {
+              "type": "ARMY",
+              "location": "HOL",
+              "team": "GERMANY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "F KIE -> KIE",
+                "A HOL -> HOL"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.5",
+          "desc": "Check that a unit cannot be moved to its own space with a convoy",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "NTH",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "ARMY",
+              "location": "YOR",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "ARMY",
+              "location": "LVP",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "LON",
+              "team": "GERMANY"
+            },
+            {
+              "type": "ARMY",
+              "location": "WAL",
+              "team": "GERMANY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F NTH C A YOR -> YOR",
+                "A YOR -> YOR",
+                "A LVP S A YOR -> YOR"
+              ]
+            },
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "F LON -> YOR",
+                "A WAL S F LON -> YOR"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "F LON -> YOR"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.A.6",
+          "desc": "",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "LON",
+              "team": "ENGLAND"
+            }
+          ],
+          "orders": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "F LON -> NTH"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.7",
+          "desc": "Check that a fleet cannot be convoyed",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "LON",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "FLEET",
+              "location": "NTH",
+              "team": "ENGLAND"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F LON -> BEL",
+                "F NTH C F LON -> BEL"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.8",
+          "desc": "Check that a unit cannot support itself to gain an extra hold power",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "ARMY",
+              "location": "TYR",
+              "team": "ITALY"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN -> TRI",
+                "A TYR S A VEN -> TRI"
+              ]
+            },
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F TRI S F TRI H"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN -> TRI"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.A.9",
+          "desc": "If two provinces are adjacent, that does not mean that a fleet can move between those two provinces. ",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "ROM",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F ROM -> VEN"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.10",
+          "desc": "Destination of supported move must be reachable by supporting unit",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "VEN",
+              "team": "AUSTRIA"
+            },
+            
+            {
+              "type": "FLEET",
+              "location": "ROM",
+              "team": "ITALY"
+            },
+            {
+              "type": "ARMY",
+              "location": "APU",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A VEN H"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F ROM S A APU -> VEN",
+                "A APU -> VEN"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.11",
+          "desc": "Simple bounce",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "VIE",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "ARMY",
+              "location": "VEN",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A VIE -> TYR"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN -> TYR"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.A.12",
+          "desc": "Three-unit bounce",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "VIE",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "ARMY",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "ARMY",
+              "location": "MUN",
+              "team": "GERMANY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A VIE -> TYR"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN -> TYR"
+              ]
+            },
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A MUN -> TYR"
+              ]
+            }
+          ],
+          "result_moves": []
+        }
+      ]
+    },
+    {
+      "title": "6.B COASTAL ISSUES",
+      "tests": [
+        {
+          "title": "6.B.1",
+          "desc": "Check that a move which requires a coast fails when not specified",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "POR",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F POR -> SPA"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.B.2",
+          "desc": "Check that a move which can only go to one coast succeeds when not specified",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "GAS",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F GAS -> SPA"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F GAS -> SPA-nc"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.B.3",
+          "desc": "Check that a move which can only go to one coast fails when another coast is specified",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "GAS",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F GAS -> SPA-sc"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.B.4",
+          "desc": "Check that a fleet can support an unreachable coast",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "GAS",
+              "team": "FRANCE"
+            },
+            {
+              "type": "FLEET",
+              "location": "MAR",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "WES",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F GAS -> SPA-nc",
+                "F MAR S F GAS -> SPA-nc"
+              ]
+            },
+
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F WES -> SPA-sc"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F GAS -> SPA-nc"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.B.5",
+          "desc": "Check that a fleet cannot support a territory reachable from the other coast",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "SPA-nc",
+              "team": "FRANCE"
+            },
+            {
+              "type": "FLEET",
+              "location": "MAR",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "LYO",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F SPA S F MAR -> LYO",
+                "F MAR -> LYO"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.B.6",
+          "desc": "Support can be cut from the other coast",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "IRI",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "FLEET",
+              "location": "NAO",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "SPA-nc",
+              "team": "FRANCE"
+            },
+            {
+              "type": "FLEET",
+              "location": "MAO",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "LYO",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F IRI S F NAO -> MAO",
+                "F NAO -> MAO"
+              ]
+            },
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F SPA S F MAO H",
+                "F MAR H"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO -> SPA-sc"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F NAO -> MAO"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.B.7",
+          "desc": "Supporting own unit without specifying the coast should fail",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "POR",
+              "team": "FRANCE"
+            },
+            {
+              "type": "FLEET",
+              "location": "MAO",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "LYO",
+              "team": "ITALY"
+            },
+            {
+              "type": "FLEET",
+              "location": "WES",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F POR S F MAO -> SPA",
+                "F MAO -> SPA-nc"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO S F WES -> SPA-sc",
+                "F WES -> SPA-sc"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F WES -> SPA-sc"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.B.8",
+          "desc": "Supporting with unspecified coast when only one coast is possible should succeed",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "POR",
+              "team": "FRANCE"
+            },
+            {
+              "type": "FLEET",
+              "location": "GAS",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "LYO",
+              "team": "ITALY"
+            },
+            {
+              "type": "FLEET",
+              "location": "WES",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F POR S F GAS -> SPA",
+                "F GAS -> SPA-nc"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO S F WES -> SPA-sc",
+                "F WES -> SPA-sc"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.B.9",
+          "desc": "Supporting to wrong coast should be possible",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "POR",
+              "team": "FRANCE"
+            },
+            {
+              "type": "FLEET",
+              "location": "MAO",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "LYO",
+              "team": "ITALY"
+            },
+            {
+              "type": "FLEET",
+              "location": "WES",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F POR S F MAO -> SPA-nc",
+                "F MAO -> SPA-sc"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO S F WES -> SPA-sc",
+                "F WES -> SPA-sc"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F WES -> SPA-sc"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.B.10",
+          "desc": "If a unit's starting coast is specified incorrectly, but the order is otherwise valid, the move will still be attempted",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "SPA-sc",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F SPA-nc -> LYO"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F SPA-sc -> LYO"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.B.11",
+          "desc": "Coast cannot change just by ordering another coast",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "SPA-nc",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F SPA-sc -> LYO"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.B.12",
+          "desc": "Armies should ignore coasts specified on their movement",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "GAS",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "A GAS -> SPA-nc"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "A GAS -> SPA"
+              ]
+            }
+          ]
+        },
+        {
+          "title": "6.B.13",
+          "desc": "Coastal crawl not allowed (coasts don't stop movements from being head-to-head)",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "BUL-sc",
+              "team": "TURKEY"
+            },
+            {
+              "type": "FLEET",
+              "location": "CON",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F BUL-sc -> CON",
+                "F CON -> BUL-ec"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.B.14",
+          "desc": "Coast must be specified in certain build cases",
+          "start_units": [],
+          "orders": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "build F STP"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "title": "6.B.15",
+          "desc": "Supporting foreign unit with unspecified coast - support should be valid",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "POR",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "MAO",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "LYO",
+              "team": "ITALY"
+            },
+            {
+              "type": "FLEET",
+              "location": "WES",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F POR S F MAO -> SPA"
+              ]
+            },
+
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F MAO -> SPA-nc"
+              ]
+            },
+            
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO S F WES -> SPA-sc",
+                "F WES -> SPA-sc"
+              ]
+            }
+          ],
+          "result_moves": []
+        }
+      ]
+    },
+    {
+      "title": "6.C CIRCULAR MOVEMENT",
+      "tests": [
+
+      ]
+    }
+  ]
+}
