@@ -2,88 +2,184 @@
 from display_object import Unit, Order
 from colorama import init as colorama_init
 from colorama import Fore, Back, Style
+import json_loader 
 
-POS = [0,0]
-ORD = "  Orders:\n"
+FAIL = 0
+WARN = 1
+SUCCESS = 2
 
-class DATC_Tester():
+class Order:
+    BUILD = 0
+    HOLD = 1
+    MOVE = 2
+    SUPPORT = 3
+    CONVOY = 4
+
+class Phase:
+    WINTER = 0
+    SPRING = 1
+    AUTUMN = 2
+
+def load_test_cases(filepath):
+    required_structure = []
+    json_loader.load_from_JSON(filepath, required_structure)
+
+    return json_data
+
+def format_text(text, format):
+    """
+    Permit format keywords. The keywords allowed are:
+    - success: bold green text, default bg
+    """
+    tags = ""
+    match color:
+        case "success":
+            tags += Fore.GREEN
+        case "warning":
+            tags += Fore.YELLOW
+        case "failure":
+            tags += Fore.RED
+        case "highlight_success":
+            tags += Back.GREEN + Style.BRIGHT
+        case "highlight_warning":
+            tags += Back.YELLOW + Style.BRIGHT
+        case "highlight_failure":
+            tags += Back.RED + Style.BRIGHT
+        case "context":
+            tags += Style.DIM
+        case _:
+            # Don't tag meaninglessly
+            return text
+    return f"{tags}{text}{Style.RESET_ALL}"
+
+class Adjudicator_Test_Interface():
     def __init__(self, adjudicator):
         self.adjudicator = adjudicator
 
-        colorama_init()
-
         # Check that the adjudicator implements all the required functions
-        required_methods = ["update_units", "set_phase", "adjudicate_moveset"]
+        required_methods = [
+            "test_remove_all_units",
+            "test_create_unit",
+            "test_set_phase",
+            "test_string_to_order",
+            "test_order_to_string",
+            "test_adjudicate_moveset"
+        ]
         for name in required_methods:
             required_method = getattr(self.adjudicator, name, None)
             assert callable(required_method), f"Adjudicator does not have a method called {name}. Implement it, or wrap the appropriate method."
+        
+        # Check for optionally defined intentional failures
+        self.int_fails = {}
+        intentional_failures = getattr(self.adjudicator, "test_get_intentional_failures", None)
+        if callable(intentional_failures):
+            fails = intentional_failures()
+            for fail in fails:
+                self.int_fails[fail[0]] = fail[1]
+        else:
+            print("No intentional failures.")
+        
+        # To define tests to intentionally fail for your adjudicator, create a method named "test_get_intentional_failures".
+        # The method should return a list of (test_number, reason) tuples. Examples:
+        # [
+        #     ("6.A.1", "I think illegal moves should succeed"),
+        #     ("6.A.6", "Implementation is for sandbox"),
+        #     ("6.B.1", "")
+        # ]
 
-    def unit_list_to_team_set(self, unit_list):
-        units = {}
-        for unit in unit_list:
-            if unit.team not in units.keys():
-                units[unit.team] = []
-            units[unit.team].append(unit)
-        return units
+    def get_order_type(self, order_string):
+        parts = order_string.split()
+        if parts[0] == "build":
+            return Order.BUILD
+        match parts[2]:
+            case "->":
+                return Order.MOVE
+            case "S":
+                return Order.SUPPORT
+            case "C":
+                return Order.CONVOY
+            _:
+                return Order.HOLD
+
+    def setup(self, test_case):
+        """ Setup beginning state with the starting units. Check whether it should be winter (first order should be enough). """
+        for unit in test_case["start_units"]:
+            # Processing required?
+            self.adjudicator.test_create_unit(unit)
+
+        if self.get_order_type(test_case["orders"][0]["moveset"][0]) == Order.BUILD:
+            self.adjudicator.test_set_phase(Phase.WINTER)
+        else:
+            self.adjudicator.test_set_phase(Phase.SPRING)
+
+    def enter_orders_and_run(self, test_case):
+        """ Enter orders for each team of units, return the result of adjudicating them all """
+        moveset = []
+        for team_orderset in test_case["orders"]:
+            team_name = team_orderset["team"]
+            for order_string in team_orderset["moveset"]:
+                moveset.append(self.adjudicator.test_string_to_order(team, order_string))
+        
+        return [self.adjudicator.test_order_to_string(o) for o in self.adjudicator.test_adjudicate_moveset(moveset)]
+
+    def check_for_intentional_fail(self, test_case):
+        if test_case["title"] in self.int_fails.keys():
+            return self.int_fails[test_case["title"]]
+        return False
+
+
+class Test_Runner():
+    def __init__(self, adjudicator, test_case_file):
+        self.adj_int = Adjudicator_Test_Interface(adjudicator)
+        self.test_cases = load_test_cases(test_case_file)
+
+        colorama_init()
+
+    def evaluate_test_case(self, test_case):
+        reason = ''
+        try:
+            self.adj_int.setup(test_case)
+            result_moveset = self.adj_int.enter_orders_and_run(test_case)
+            assert self.is_same_moves(test_case["result_moves"], result_moveset)
+            state = SUCCESS
+        except AssertionError:
+            # Check for test cases intentionally failed
+            state = FAIL
+            reason = self.adj_int.check_for_intentional_fail(test_case)
+            if reason !== False:
+                # Intentional, mitigate failure
+                state = WARN
+        finally:
+            self.show_test_case(test_case, state, reason)
+        return state
 
     def display_test_results(self):
         """ Run all cases in DATC and show output """
-        all_cases = [
-            # Test cases A - basic checks
-            tc_a_1, tc_a_2, tc_a_3, tc_a_4, tc_a_5, tc_a_7, tc_a_8, tc_a_9, tc_a_10, tc_a_11, tc_a_12,
-            # Test cases B - coastal issues
-            tc_b_1, tc_b_2, tc_b_3, tc_b_4, tc_b_5, tc_b_6, tc_b_7, tc_b_8, tc_b_9, tc_b_10, tc_b_11, tc_b_12, tc_b_13, tc_b_14, tc_b_15
-            # Test cases C - circular movement
-            # Test cases D - supports and dislodges
-            # Test cases E - head-to-head battles and beleaguered garrison
-            # Test cases F - convoys
-            # Test cases G - convoying to adjacent provinces
-            # Test cases H - retreating
-            # Test cases I - building
-            # Test cases J - civil disorder and disbands
-        ]
         total = 0
         fail_count = 0
         warning_count = 0
-        for test_case in all_cases:
-            total += 1
-            failed = 0
-            successful_moves = []
-
-            units, orders, results, msgs = test_case()
-            self.adjudicator.units = self.unit_list_to_team_set(units)
-            if orders[0].type == "build":
-                self.adjudicator.set_phase("winter")
-            else:
-                self.adjudicator.set_phase("spring")
-            try:
-                successful_moves = self.adjudicator.adjudicate_moveset(orders)
-                assert self.is_same_moves(set(successful_moves), set(results))
-            except AssertionError:
-                if msgs["title"] not in self.adjudicator.get_intentional_DATC_failures():
-                    failed = 2
-                    fail_count += 1
-                else:
-                    failed = 1
-                    warning_count += 1
-            finally:
-                self.show_test_case(msgs, failed, successful_moves, results)
+        for section in self.test_cases["sections"]:
+            for test_case in section["test_cases"]:
+                total += 1
+                match self.evaluate_test_case(test_case):
+                    case FAIL:
+                        fail_count += 1
+                    case WARNING:
+                        warning_count += 1
         
         self.show_summary(total, fail_count, warning_count)
     
-    def is_same_moves(self, set_1, set_2):
-        if len(set_1) != len(set_2):
+    def is_same_moves(self, expected, result):
+        if len(expected) != len(result):
             return False
-        strings_1 = [str(move) for move in set_1]
-        strings_2 = [str(move) for move in set_2]
-        strings_1.sort()
-        strings_2.sort()
-        for i in range(len(strings_1)):
-            if strings_1[i] != strings_2[i]:
+        expected.sort()
+        result.sort()
+        for i in range(len(expected)):
+            if expected[i] != result[i]:
                 return False
         return True
 
-    def show_test_case(self, msgs, failed, successful_moves, results):
+    def show_test_case(self, test_case, state, reason):
         if "section_title" in msgs.keys():
             print()
             print("=" * 50)

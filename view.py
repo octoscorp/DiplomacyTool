@@ -427,8 +427,10 @@ class DiplomacyWindow():
                                                        fill='#c11', width=3, tags=("order", 'order_layer')))
 
 def run_tests():
+    ROOT_ATTRIBUTES = ["adjacency", "map_data", "starting_builds"]
+    NODE_ATTRIBUTES = ["type", "is_supply_centre", "full_name", "location"]
     import map_loader
-    data = map_loader.load_from_JSON("./Maps/default.json", True)
+    data = map_loader.load_from_JSON("./Maps/default.json", ROOT_ATTRIBUTES)
 
     DiplomacyWindow(data["border_points"], data["map_data"], data["starting_builds"], data["adjacency"])
 
