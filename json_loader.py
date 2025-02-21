@@ -1,12 +1,12 @@
 """
-Loads a diplomacy map from a JSON file.
-The format of the file must include details to outline the adjacencies and relative positions, and ideally will contain outlines too.
+Loads a JSON file and has the ability to check for top-level keys.
+Ideally would be extended to check against a schema.
 
-Date: 3/06/2024
+Date: 21/02/2025
 Author: G Hampton
 
 =============================================================
-File format:
+Map file format:
 {
   "adjacency": {
     "NAO": ["NWG", "CLY", "LIV", "IRI", "MAO"],
@@ -49,19 +49,18 @@ File format:
 
 import json
 
-ROOT_ATTRIBUTES = ["adjacency", "map_data", "starting_builds"]
-NODE_ATTRIBUTES = ["type", "is_supply_centre", "full_name", "location"]
-
-def _read_file_to_JSON(filepath, require_borders):
-    """Checks that file exists, is openable, and is valid JSON. Returns the JSON object."""
+def load_from_JSON(filepath, required_attributes=[]):
+    """
+    Checks that file exists, is openable, and is valid JSON. Returns the JSON object.
+      filepath: filepath to attempt to open.
+      required_attributes: checked against top-level json keys.
+    """
     file = open(filepath, "r")
     lines = file.read()
     file.close()
     json_data = json.loads(lines)
 
-    _check_attributes(json_data, ROOT_ATTRIBUTES)
-    if require_borders:
-        _check_attributes(json_data, ["border_points"])
+    _check_attributes(json_data, required_attributes)
       
     return json_data
 
@@ -70,9 +69,3 @@ def _check_attributes(json_data, attributes):
     for attribute in attributes:
         if attribute not in json_data.keys():
             raise KeyError(f"Key \"{attribute}\" expected in JSON data but could not be found.")
-
-def load_from_JSON(filepath, require_borders=False):
-    """Attempts to parse the JSON file supplied by the rules provided above."""
-    data = _read_file_to_JSON(filepath, require_borders)
-
-    return data
