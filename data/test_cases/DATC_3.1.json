@@ -904,8 +904,550 @@
     {
       "title": "6.C CIRCULAR MOVEMENT",
       "tests": [
+        {
+          "index": "6.C.1",
+          "desc": "Three units can change place, even in spring 1901",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "ANK",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "CON",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "SMY",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON",
+                "A CON -> SMY",
+                "A SMY -> ANK"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON",
+                "A CON -> SMY",
+                "A SMY -> ANK"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.C.2",
+          "desc": "Three units can change place, even when one gets support",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "ANK",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "CON",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "SMY",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "BUL",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON",
+                "A CON -> SMY",
+                "A SMY -> ANK",
+                "A BUL S F ANK -> CON"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON",
+                "A CON -> SMY",
+                "A SMY -> ANK"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.C.3",
+          "desc": "When one of the units bounces, the whole circular movement will hold",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "ANK",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "CON",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "SMY",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "BUL",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON",
+                "A CON -> SMY",
+                "A SMY -> ANK",
+                "A BUL -> CON"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.C.4",
+          "desc": "Circular movement with an attacked convoy succeeds",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "ARMY",
+              "location": "SER",
+              "team": "AUSTRIA"
+            },
+            
+            {
+              "type": "ARMY",
+              "location": "BUL",
+              "team": "TURKEY"
+            },
+            {
+              "type": "FLEET",
+              "location": "AEG",
+              "team": "TURKEY"
+            },
+            {
+              "type": "FLEET",
+              "location": "ION",
+              "team": "TURKEY"
+            },
+            {
+              "type": "FLEET",
+              "location": "ADR",
+              "team": "TURKEY"
+            },
 
+            {
+              "type": "FLEET",
+              "location": "NAP",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A TRI -> SER",
+                "A SER -> BUL"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "A BUL -> TRI",
+                "F AEG C A BUL -> TRI",
+                "F ION C A BUL -> TRI",
+                "F ADR C A BUL -> TRI"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F NAP -> ION"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A TRI -> SER",
+                "A SER -> BUL"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "A BUL -> TRI"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.C.5",
+          "desc": "Dislodging a convoying unit disrupts circular movement",
+          "start_units": [
+            {
+              "type": "ARMY",
+              "location": "TRI",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "SER",
+              "team": "TURKEY"
+            },
+            
+            {
+              "type": "ARMY",
+              "location": "BUL",
+              "team": "TURKEY"
+            },
+            {
+              "type": "FLEET",
+              "location": "AEG",
+              "team": "TURKEY"
+            },
+            {
+              "type": "FLEET",
+              "location": "ION",
+              "team": "TURKEY"
+            },
+            {
+              "type": "FLEET",
+              "location": "ADR",
+              "team": "TURKEY"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "NAP",
+              "team": "ITALY"
+            },
+            {
+              "type": "FLEET",
+              "location": "TUN",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A TRI -> SER",
+                "A SER -> BUL"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "A BUL -> TRI",
+                "F AEG C A BUL -> TRI",
+                "F ION C A BUL -> TRI",
+                "F ADR C A BUL -> TRI"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F NAP -> ION",
+                "F TUN S F NAP -> ION"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F NAP -> ION"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.C.6",
+          "desc": "Two armies can swap places even when they are not adjacent",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "NTH",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "ARMY",
+              "location": "LON",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "ENG",
+              "team": "FRANCE"
+            },
+            {
+              "type": "ARMY",
+              "location": "BEL",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F NTH C A LON -> BEL",
+                "A LON -> BEL"
+              ]
+            },
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F ENG C A BEL -> LON",
+                "A BEL -> LON"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "A LON -> BEL"
+              ]
+            },
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "A BEL -> LON"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.C.7",
+          "desc": "If in a swap one of the units bounces, then the swap fails",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "NTH",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "ARMY",
+              "location": "LON",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "ENG",
+              "team": "FRANCE"
+            },
+            {
+              "type": "ARMY",
+              "location": "BEL",
+              "team": "FRANCE"
+            },
+            {
+              "type": "ARMY",
+              "location": "BUR",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F NTH C A LON -> BEL",
+                "A LON -> BEL"
+              ]
+            },
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F ENG C A BEL -> LON",
+                "A BEL -> LON",
+                "A BUR -> BEL"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.C.8",
+          "desc": "Self dislodgement is prohibited as usual in circular movement",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "CON",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "BUL",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "SMY",
+              "team": "TURKEY"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "BLA",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "ARMY",
+              "location": "SER",
+              "team": "AUSTRIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F CON -> BLA",
+                "A BUL -> CON",
+                "A SMY S A BUL -> CON"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BLA -> BUL-ec"
+              ]
+            },
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A SER -> BUL"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.C.9",
+          "desc": "Helping to dislodge your own unit is prohibited as usual in circular movement",
+          "start_units": [
+            {
+              "type": "FLEET",
+              "location": "CON",
+              "team": "TURKEY"
+            },
+            {
+              "type": "ARMY",
+              "location": "SMY",
+              "team": "TURKEY"
+            },
+
+            {
+              "type": "FLEET",
+              "location": "BLA",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "ARMY",
+              "location": "SER",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "ARMY",
+              "location": "BUL",
+              "team": "AUSTRIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F CON -> BLA",
+                "A SMY S A BUL -> CON"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BLA -> BUL-ec"
+              ]
+            },
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A SER -> BUL",
+                "A BUL -> CON"
+              ]
+            }
+          ],
+          "result_moves": []
+        }
       ]
-    }
+    },
+    {
+      "title": "6.D SUPPORTS AND DISLODGES",
+      "tests": [
+      ]
+    },
+    {
+      "title": "6.E HEAD-TO-HEAD BATTLES AND BELEAGUERED GARRISON",
+      "tests": [
+      ]
+    },
+    {
+      "title": "6.F CONVOYS",
+      "tests": [
+      ]
+    },
+    {
+      "title": "6.G CONVOYING TO ADJACENT PROVINCES",
+      "tests": [
+      ]
+    },
+    {
+      "title": "6.H RETREATING",
+      "tests": [
+      ]
+    },
+    {
+      "title": "6.I BUILDING",
+      "tests": [
+      ]
+    },
+    {
+      "title": "6.J CIVIL DISORDER AND DISBANDS",
+      "tests": [
+      ]
+    },
   ]
 }
