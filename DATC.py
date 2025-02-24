@@ -1,5 +1,12 @@
-""" Holds the Diplomacy Adjudicator Test Cases (3.0) """
-from display_object import Unit, Order
+"""
+Test Case runner and interface for matching with adjudicator.
+
+Adjudicators should only need to mesh with AdjudicatorTestInterface; whatever test
+suite they wish to use can interface with TestRunner.
+
+Author: G Hampton
+Date: 24/02/2025
+"""
 from colorama import init as colorama_init
 from colorama import Fore, Back, Style
 import json_loader 
@@ -7,6 +14,10 @@ import json_loader
 FAIL = 0
 WARN = 1
 SUCCESS = 2
+CONTEXT = 4
+HIGHLIGHT = 8
+# These two should always be the highest; adding them together ensures no collision
+NORMAL = HIGHLIGHT + CONTEXT
 
 class Order:
     BUILD = 0
@@ -33,26 +44,26 @@ def format_text(text, format):
     """
     tags = ""
     match color:
-        case "success":
-            tags += Fore.GREEN
-        case "warning":
-            tags += Fore.YELLOW
-        case "failure":
+        case FAIL:
             tags += Fore.RED
-        case "highlight_success":
-            tags += Back.GREEN + Style.BRIGHT
-        case "highlight_warning":
-            tags += Back.YELLOW + Style.BRIGHT
-        case "highlight_failure":
+        case WARN:
+            tags += Fore.YELLOW
+        case SUCCESS:
+            tags += Fore.GREEN
+        case HIGHLIGHT + FAIL:
             tags += Back.RED + Style.BRIGHT
-        case "context":
+        case HIGHLIGHT + WARN:
+            tags += Back.YELLOW + Style.BRIGHT
+        case HIGHLIGHT + SUCCESS:
+            tags += Back.GREEN + Style.BRIGHT
+        case CONTEXT:
             tags += Style.DIM
         case _:
             # Don't tag meaninglessly
             return text
     return f"{tags}{text}{Style.RESET_ALL}"
 
-class Adjudicator_Test_Interface():
+class AdjudicatorTestInterface():
     def __init__(self, adjudicator):
         self.adjudicator = adjudicator
 
@@ -128,14 +139,14 @@ class Adjudicator_Test_Interface():
         return False
 
 
-class Test_Runner():
+class TestRunner():
     def __init__(self, adjudicator, test_case_file):
-        self.adj_int = Adjudicator_Test_Interface(adjudicator)
+        self.adj_int = AdjudicatorTestInterface(adjudicator)
         self.test_cases = load_test_cases(test_case_file)
 
         colorama_init()
 
-    def evaluate_test_case(self, test_case):
+    def _evaluate_test_case(self, test_case, quiet):
         reason = ''
         try:
             self.adj_int.setup(test_case)
@@ -150,18 +161,20 @@ class Test_Runner():
                 # Intentional, mitigate failure
                 state = WARN
         finally:
-            self.show_test_case(test_case, state, reason)
+            if !quiet:
+                self.show_test_case(test_case, state, reason, moves)
         return state
 
-    def display_test_results(self):
-        """ Run all cases in DATC and show output """
+    def display_test_results(self, quiet=False):
+        """ Run all cases given and show output """
         total = 0
         fail_count = 0
         warning_count = 0
         for section in self.test_cases["sections"]:
+            self._show_section_header(section["title"])
             for test_case in section["test_cases"]:
                 total += 1
-                match self.evaluate_test_case(test_case):
+                match self._evaluate_test_case(test_case, quiet):
                     case FAIL:
                         fail_count += 1
                     case WARNING:
@@ -179,32 +192,72 @@ class Test_Runner():
                 return False
         return True
 
-    def show_test_case(self, test_case, state, reason):
-        if "section_title" in msgs.keys():
-            print()
-            print("=" * 50)
-            print(msgs["section_title"])
-        print("-" * 50)
-        back_colour = Back.GREEN
-        if failed == 1:
-            back_colour = Back.YELLOW
-        elif failed == 2:
-            back_colour = Back.RED
-        print(f"{back_colour}{msgs['title']}{Style.RESET_ALL}")
-        print(msgs["orders"])
+    def _show_section_header(self, section_title):
         print()
-        print(msgs["err"] if failed == 2 else msgs["success"])
-        if failed > 0:
-            print(f"  Expected results: {[str(move) for move in results]}")
-            print(f"  Actual results: {[str(move) for move in successful_moves]}")
+        print("=" * 50)
+        print(section_title)
+
+    def _print_orders(self, orders, state=NORMAL):
+        for orderset in orders:
+            team_name = orders["team"]
+            moves = orders["moveset"]
+            
+            print(format_text(f"{team_name}:", state))
+            for move in moves:
+                print(format_text(f"  {move}", state))
+            print()
+
+    def show_test_case(self, test_case, state, reason, moves_made):
+        print("-" * 50)
+        # Header
+        print(format_text(test_case["title"], state + HIGHLIGHT))
+
+        # Orders for context
+        self._print_orders(test_case["orders"], CONTEXT)
+        if state < SUCCESS:
+            print("!" * 8)
+            print("Expected results:")
+            self._print_orders(test_case["result_moves"])
+            print("-")
+            print("Actual results:")
+            self._print_orders(moves_made, state)
+            if state == WARN:
+                reason = reason if reason else "No reason given."
+                print("-" * 3)
+                print(format_text(f"Reason: {reason}", WARN))
         print()
     
     def show_summary(self, total, fails, warnings):
-        colour = Fore.RED if fails > 0 else Fore.GREEN
-        print(f"{colour}{'=' * 50}{Style.RESET_ALL}")
-        print(f"{colour}SUMMARY{Style.RESET_ALL}")
+        overall_state = FAIL if fails > 0 else SUCCESS
+        print(format_text('=' * 50 + "\nSUMMARY", overall_state))
         print()
-        print(f"{colour}{total - fails - warnings} of {total} test cases passed.{Style.RESET_ALL}")
+        print(format_text(f"{total - fails - warnings} of {total} test cases passed.", overall_state))
         if warnings > 0:
-            print(f"  - {Fore.YELLOW}Of which {warnings} were intentional.{Style.RESET_ALL}")
-        print(f"{colour}{'=' * 50}{Style.RESET_ALL}")
+            print(format_text(f"  - Of which {warnings} were intentional.", WARN))
+        print(format_text('=' * 50), overall_state)
+
+def main():
+    from diplomacy_adjudicator import DefaultAdjudicator
+    import sys
+
+    silenced = False
+    test_file = "./data/test_cases/DATC_3.1.json"
+
+    # Very rough command-line parsing
+    if len(sys.argv) > 1:
+        silenced = sys.argv.index("-q")
+        if silenced != -1:
+            sys.argv.pop(silenced)
+            silenced = True
+        # If silenced, must have filename
+        test_file = sys.argv[1]
+
+    # DefaultAdjudicator is a shortcut which allows test interfaces to ignore implementation details and needs no arguments
+    test_adj = DefaultAdjudicator()
+    runner = TestRunner(test_adj, test_file)
+
+    runner.display_test_results(silenced)
+
+# Tests
+if __name__ == "__main__":
+    main()
