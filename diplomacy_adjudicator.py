@@ -4,25 +4,22 @@ Class for adjudicating Diplomacy moves
 Date: 10/6/2024
 Author: G Hampton
 """
-class DiplomacyAdjudicator():
+import diplomacy_utils
+
+class DiplomacyAdjudicator(BaseAdjudicator):
+    # TODO: remove double-ups of Base functionality
+    # TODO: add utils usage
     def __init__(self, adjacency, territories, units):
         self.adjacency = adjacency
         self.territories = territories
         self.units = units
         self.retreats = []
-        self.phase = 0
+        self.phase = Phase.WINTER
         self.counts_last_round = {team: 0 for team in units.keys()}
         for name in self.territories.keys():
             team = self.territories[name].owned_by
             if team:
                 self.counts_last_round[team] += 1
-    
-    def get_intentional_DATC_failures(self):
-        """ This function returns a list of the DATC test cases which this adjudicator fails intentionally. """
-        return [
-            "6.A.6",    # Ordering a unit of another country - this is intended for a sandbox environment.
-            "6.B.7",    # Supporting own unit with unspecified coast - this is intended for use in face-to-face play, so is a little more generous.
-        ]
 
     def update_units(self, units):
         self.units = units
@@ -30,15 +27,8 @@ class DiplomacyAdjudicator():
     def update_territories(self, territories):
         self.territories = territories
     
-    def get_current_phase(self):
-        return PHASES[self.phase]
-    
     def step_phase(self):
         self.phase = (self.phase + 1) % len(PHASES)
-    
-    def set_phase(self, phase):
-        """ Allows for setting the phase directly. Used in testing. """
-        self.phase = PHASES.index(phase.lower())
     
     def get_changes(self):
         return {
@@ -347,36 +337,98 @@ class DiplomacyAdjudicator():
                     continue
             return to_coast
     
+    # Override!
+    def test_get_intentional_failures(self):
+        """ This function returns a list of the test cases which this adjudicator fails intentionally. """
+        return {
+            "DATC_3.1": [
+                ("6.A.6", "This is intended for a sandbox environment"),    # Ordering a unit of another country - this is intended for a sandbox environment.
+                ("6.B.7", "Usage in face-to-face play should be a little more generous"),    # Supporting own unit with unspecified coast - this is intended for use in face-to-face play, so is a little more generous.
+            ],
+        }
+
+class BaseAdjudicator():
+    """
+    An interface, which adjudicators should extend. Implements stubs of all test-interfacing methods
+    """
+    def __init__(self):
+        self.phase = Phase.SPRING
+        self.units = {}
+
+    # Override this!
+    def adjudicate_moveset(self, moveset):
+        raise NotImplementedError
+
+    # Tester interface
     def test_remove_all_units(self):
-        pass
+        self.units = {}
 
-    def test_create_unit(self):
-        pass
+    def test_create_unit(self, unit):
+        u = Unit(
+            Unit.type_from_string(unit["type"]),
+            unit["location"],
+            unit["team"]
+        )
 
-    def test_set_phase(self):
-        pass
+        # Add to own units
+        if unit["team"] not in self.units.keys():
+            self.units[unit["team"]] = []
+        self.units[unit["team"]].append(u)
 
-    def test_string_to_order(self):
-        pass
+    def test_set_phase(self, phase):
+        self.phase = phase
 
-    def test_order_to_string(self):
-        pass
+    def test_string_to_order(self, string):
+        return Order.from_string(string)
 
-    def test_adjudicate_moveset(self):
-        pass
+    def test_order_to_string(self, order):
+        # Verify that the tester has given an actual Order (isinstance should allow for subclasses too)
+        assert(isinstance(order, Order))
+        return str(order)
+
+    def test_adjudicate_moveset(self, moveset):
+        # Check that the tester has sent the moveset in a structure we expect
+        # {
+        #     "TEAM": [
+        #         "Order1",
+        #         "..."
+        #     ]
+        # }
+        for team in moveset.keys():
+            assert(type(moveset[team]) is list)
+            for order in moveset[team]:
+                assert(isinstance(order, Order))
+        return self.adjudicate_moveset(moveset)
+    
+    # Optionally override to define your own intentional failures.
+    def test_get_intentional_failures(self):
+        """
+        This function returns a list of the test cases which this adjudicator fails intentionally.
+        Format:
+        {
+            MODULE_NAME: [
+                (index, reason)
+            ]
+        }
+        """
+        return {}
 
 
 
 class DefaultAdjudicator():
-    """A wrapper to allow instantiation with no init arguments. Useful in decoupling tests"""
+    """
+    A wrapper to allow instantiation with no init arguments. Useful in decoupling tests.
+    Does NOT have any units loaded to start with.
+    """
     __init__(self):
         import json_loader
         from display_object import Territory
-        data = json_loader.load_from_JSON("./Maps/default.json", True)
+        data = json_loader.load_from_JSON("./data/maps/default.json", True)
 
         # Create territories
         territories = {}
         for name in data["map_data"].keys():
+            # TODO: Fix territory definition
             territories[name] = Territory(None, name, [], data["map_data"][name], is_test=True)
 
         return DiplomacyAdjudicator(data["adjacency"], territories, units={})

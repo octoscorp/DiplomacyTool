@@ -1,4 +1,5 @@
 {
+  "test_module_name": "DATC_3.1",
   "sections": [
     {
       "title": "6.A BASIC CHECKS",
@@ -8,7 +9,7 @@
           "desc": "Check that an illegal move (without convoy) will fail",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NTH",
               "team": "ENGLAND"
             }
@@ -28,7 +29,7 @@
           "desc": "Check that an army cannot be moved to open sea",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "LVP",
               "team": "ENGLAND"
             }
@@ -48,7 +49,7 @@
           "desc": "Check that a fleet cannot be moved to land (non-coastal)",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "KIE",
               "team": "GERMANY"
             }
@@ -68,12 +69,12 @@
           "desc": "Check that a unit cannot be moved to its own space",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "KIE",
               "team": "GERMANY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "HOL",
               "team": "GERMANY"
             }
@@ -94,28 +95,28 @@
           "desc": "Check that a unit cannot be moved to its own space with a convoy",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NTH",
               "team": "ENGLAND"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "YOR",
               "team": "ENGLAND"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "LVP",
               "team": "ENGLAND"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LON",
               "team": "GERMANY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "WAL",
               "team": "GERMANY"
             }
@@ -151,7 +152,7 @@
           "desc": "",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LON",
               "team": "ENGLAND"
             }
@@ -171,12 +172,12 @@
           "desc": "Check that a fleet cannot be convoyed",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LON",
               "team": "ENGLAND"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NTH",
               "team": "ENGLAND"
             }
@@ -197,18 +198,18 @@
           "desc": "Check that a unit cannot support itself to gain an extra hold power",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "VEN",
               "team": "ITALY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "TYR",
               "team": "ITALY"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "TRI",
               "team": "AUSTRIA"
             }
@@ -242,7 +243,7 @@
           "desc": "If two provinces are adjacent, that does not mean that a fleet can move between those two provinces. ",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ROM",
               "team": "ITALY"
             }
@@ -262,18 +263,18 @@
           "desc": "Destination of supported move must be reachable by supporting unit",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "VEN",
               "team": "AUSTRIA"
             },
             
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ROM",
               "team": "ITALY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "APU",
               "team": "ITALY"
             }
@@ -300,12 +301,12 @@
           "desc": "Simple bounce",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "VIE",
               "team": "AUSTRIA"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "VEN",
               "team": "ITALY"
             }
@@ -331,17 +332,17 @@
           "desc": "Three-unit bounce",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "VIE",
               "team": "AUSTRIA"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "VEN",
               "team": "ITALY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "MUN",
               "team": "GERMANY"
             }
@@ -378,7 +379,7 @@
           "desc": "Check that a move which requires a coast fails when not specified",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "POR",
               "team": "FRANCE"
             }
@@ -398,7 +399,7 @@
           "desc": "Check that a move which can only go to one coast succeeds when not specified",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "GAS",
               "team": "FRANCE"
             }
@@ -425,7 +426,7 @@
           "desc": "Check that a move which can only go to one coast fails when another coast is specified",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "GAS",
               "team": "FRANCE"
             }
@@ -445,18 +446,18 @@
           "desc": "Check that a fleet can support an unreachable coast",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "GAS",
               "team": "FRANCE"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "MAR",
               "team": "FRANCE"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "WES",
               "team": "ITALY"
             }
@@ -491,18 +492,18 @@
           "desc": "Check that a fleet cannot support a territory reachable from the other coast",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "SPA-nc",
               "team": "FRANCE"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "MAR",
               "team": "FRANCE"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LYO",
               "team": "ITALY"
             }
@@ -529,29 +530,29 @@
           "desc": "Support can be cut from the other coast",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "IRI",
               "team": "ENGLAND"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NAO",
               "team": "ENGLAND"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "SPA-nc",
               "team": "FRANCE"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "MAO",
               "team": "FRANCE"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LYO",
               "team": "ITALY"
             }
@@ -592,23 +593,23 @@
           "desc": "Supporting own unit without specifying the coast should fail",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "POR",
               "team": "FRANCE"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "MAO",
               "team": "FRANCE"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LYO",
               "team": "ITALY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "WES",
               "team": "ITALY"
             }
@@ -643,23 +644,23 @@
           "desc": "Supporting with unspecified coast when only one coast is possible should succeed",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "POR",
               "team": "FRANCE"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "GAS",
               "team": "FRANCE"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LYO",
               "team": "ITALY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "WES",
               "team": "ITALY"
             }
@@ -687,23 +688,23 @@
           "desc": "Supporting to wrong coast should be possible",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "POR",
               "team": "FRANCE"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "MAO",
               "team": "FRANCE"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LYO",
               "team": "ITALY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "WES",
               "team": "ITALY"
             }
@@ -738,7 +739,7 @@
           "desc": "If a unit's starting coast is specified incorrectly, but the order is otherwise valid, the move will still be attempted",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "SPA-sc",
               "team": "FRANCE"
             }
@@ -765,7 +766,7 @@
           "desc": "Coast cannot change just by ordering another coast",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "SPA-nc",
               "team": "FRANCE"
             }
@@ -785,7 +786,7 @@
           "desc": "Armies should ignore coasts specified on their movement",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "GAS",
               "team": "FRANCE"
             }
@@ -812,12 +813,12 @@
           "desc": "Coastal crawl not allowed (coasts don't stop movements from being head-to-head)",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "BUL-sc",
               "team": "TURKEY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "CON",
               "team": "TURKEY"
             }
@@ -852,24 +853,24 @@
           "desc": "Supporting foreign unit with unspecified coast - support should be valid",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "POR",
               "team": "FRANCE"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "MAO",
               "team": "ENGLAND"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "LYO",
               "team": "ITALY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "WES",
               "team": "ITALY"
             }
@@ -909,17 +910,17 @@
           "desc": "Three units can change place, even in spring 1901",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ANK",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "CON",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SMY",
               "team": "TURKEY"
             }
@@ -950,22 +951,22 @@
           "desc": "Three units can change place, even when one gets support",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ANK",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "CON",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SMY",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BUL",
               "team": "TURKEY"
             }
@@ -997,22 +998,22 @@
           "desc": "When one of the units bounces, the whole circular movement will hold",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ANK",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "CON",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SMY",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BUL",
               "team": "TURKEY"
             }
@@ -1035,39 +1036,39 @@
           "desc": "Circular movement with an attacked convoy succeeds",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "TRI",
               "team": "AUSTRIA"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SER",
               "team": "AUSTRIA"
             },
             
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BUL",
               "team": "TURKEY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "AEG",
               "team": "TURKEY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ION",
               "team": "TURKEY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ADR",
               "team": "TURKEY"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NAP",
               "team": "ITALY"
             }
@@ -1117,44 +1118,44 @@
           "desc": "Dislodging a convoying unit disrupts circular movement",
           "start_units": [
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "TRI",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SER",
               "team": "TURKEY"
             },
             
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BUL",
               "team": "TURKEY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "AEG",
               "team": "TURKEY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ION",
               "team": "TURKEY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ADR",
               "team": "TURKEY"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NAP",
               "team": "ITALY"
             },
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "TUN",
               "team": "ITALY"
             }
@@ -1198,23 +1199,23 @@
           "desc": "Two armies can swap places even when they are not adjacent",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NTH",
               "team": "ENGLAND"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "LON",
               "team": "ENGLAND"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ENG",
               "team": "FRANCE"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BEL",
               "team": "FRANCE"
             }
@@ -1255,28 +1256,28 @@
           "desc": "If in a swap one of the units bounces, then the swap fails",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "NTH",
               "team": "ENGLAND"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "LON",
               "team": "ENGLAND"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "ENG",
               "team": "FRANCE"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BEL",
               "team": "FRANCE"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BUR",
               "team": "FRANCE"
             }
@@ -1305,29 +1306,29 @@
           "desc": "Self dislodgement is prohibited as usual in circular movement",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "CON",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BUL",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SMY",
               "team": "TURKEY"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "BLA",
               "team": "RUSSIA"
             },
 
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SER",
               "team": "AUSTRIA"
             }
@@ -1361,29 +1362,29 @@
           "desc": "Helping to dislodge your own unit is prohibited as usual in circular movement",
           "start_units": [
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "CON",
               "team": "TURKEY"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SMY",
               "team": "TURKEY"
             },
 
             {
-              "type": "FLEET",
+              "type": "F",
               "location": "BLA",
               "team": "RUSSIA"
             },
 
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "SER",
               "team": "AUSTRIA"
             },
             {
-              "type": "ARMY",
+              "type": "A",
               "location": "BUL",
               "team": "AUSTRIA"
             }

@@ -78,19 +78,23 @@ class AdjudicatorTestInterface():
         self.int_fails = {}
         intentional_failures = getattr(self.adjudicator, "test_get_intentional_failures", None)
         if callable(intentional_failures):
-            fails = intentional_failures()
-            for fail in fails:
-                self.int_fails[fail[0]] = fail[1]
+            fail_dict = intentional_failures()
+            for test_module in fail_dict.keys():
+                self.int_fails[test_module] = {}
+                for fail in fail_dict[test_module]:
+                    self.int_fails[test_module][fail[0]] = fail[1]
         else:
             print("No intentional failures.")
         
         # To define tests to intentionally fail for your adjudicator, create a method named "test_get_intentional_failures".
-        # The method should return a list of (test_number, reason) tuples. Examples:
-        # [
-        #     ("6.A.1", "I think illegal moves should succeed"),
-        #     ("6.A.6", "Implementation is for sandbox"),
-        #     ("6.B.1", "")
-        # ]
+        # The method should return a dictionary by test module, each containing a list of (index, reason) tuples. Examples:
+        # {
+        #     "DATC_3.1": [
+        #         ("6.A.1", "I think illegal moves should succeed"),
+        #         ("6.A.6", "Implementation is for sandbox"),
+        #         ("6.B.1", "")
+        #     ]
+        # }
 
     def get_order_type(self, order_string):
         parts = order_string.split()
@@ -119,17 +123,19 @@ class AdjudicatorTestInterface():
 
     def enter_orders_and_run(self, test_case):
         """ Enter orders for each team of units, return the result of adjudicating them all """
-        moveset = []
+        moveset = {}
         for team_orderset in test_case["orders"]:
             team_name = team_orderset["team"]
+            moveset[team_name] = []
             for order_string in team_orderset["moveset"]:
-                moveset.append(self.adjudicator.test_string_to_order(team, order_string))
+                moveset[team_name].append(self.adjudicator.test_string_to_order(order_string))
         
         return [self.adjudicator.test_order_to_string(o) for o in self.adjudicator.test_adjudicate_moveset(moveset)]
 
-    def check_for_intentional_fail(self, test_case):
-        if test_case["title"] in self.int_fails.keys():
-            return self.int_fails[test_case["title"]]
+    def check_for_intentional_fail(self, test_case, test_module):
+        if test_module in self.int_fails.keys():
+            if test_case["title"] in self.int_fails[test_module].keys():
+                return self.int_fails[test_module][test_case["title"]]
         return False
 
 
@@ -137,6 +143,8 @@ class TestRunner():
     def __init__(self, adjudicator, test_case_file):
         self.adj_int = AdjudicatorTestInterface(adjudicator)
         self.test_cases = load_test_cases(test_case_file)
+
+        self.test_module = self.test_cases["test_module_name"]
 
         colorama_init()
 
@@ -150,7 +158,7 @@ class TestRunner():
         except AssertionError:
             # Check for test cases intentionally failed
             state = FAIL
-            reason = self.adj_int.check_for_intentional_fail(test_case)
+            reason = self.adj_int.check_for_intentional_fail(test_case, self.test_module)
             if reason !== False:
                 # Intentional, mitigate failure
                 state = WARN
@@ -247,7 +255,7 @@ def main():
         test_file = sys.argv[1]
 
     # DefaultAdjudicator is a shortcut which allows test interfaces to ignore implementation details and needs no arguments
-    test_adj = DefaultAdjudicator()
+    test_adj = DefaultAdjudicator(no_units=True)
     runner = TestRunner(test_adj, test_file)
 
     runner.display_test_results(silenced)
