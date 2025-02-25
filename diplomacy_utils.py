@@ -1,13 +1,28 @@
-""" Backend utils for diplomacy """
+"""
+file: diplomacy_utils.py
+Backend utils for diplomacy.
 
-# Enums
+Implements stub classes for Phase, Order, Unit, and Territory. This should allow
+implementations to abstract away some of the basic functionality, and draw on base
+enums for type.
+  Phase: WINTER, SPRING, AUTUMN
+  Order: BUILD, HOLD, MOVE, SUPPORT, CONVOY
+  Unit: ARMY, FLEET
+  Territory: LAND, OCEAN, COAST, CANAL
+"""
+
 class Phase:
     # Types of phase
-    WINTER = 0
+    WINTER = _first_phase = 0
     SPRING = 1
-    AUTUMN = 2
+    AUTUMN = _last_phase = 2
 
-# Stub classes
+    @staticmethod
+    def get_next_phase(current_phase):
+        if current_phase == _last_phase:
+            return _first_phase
+        return current_phase + 1
+
 class Order:
     # Types of order
     BUILD = 0
@@ -27,6 +42,8 @@ class Order:
         - Support: "F BLA S A BUL -> CON"
         - Convoy: "F AEG C A BUL -> CON"
         - Build: "build F CON"
+
+        Counterpart accomplished with __str__
         """
 
         parts = order_string.split()
@@ -67,8 +84,39 @@ class Order:
                 return Order.HOLD
     
     @staticmethod
-    def to_string(order):
-        pass
+    def _string_from_type(order_type):
+        match order_type:
+            case Order.BUILD:
+                return 'build'
+            case Order.HOLD:
+                return 'H'
+            case Order.MOVE:
+                return '->'
+            case Order.SUPPORT:
+                return 'S'
+            case Order.CONVOY:
+                return 'C'
+            case _:
+                raise ValueError('This implementation only handles orders for: BUILD, HOLD, MOVE, SUPPORT, and CONVOY. That was none of these.')
+    
+    def __str__(self):
+        """ Create the string representation of this order """
+        if self.type == Order.BUILD:
+            return f"build {Unit.string_from_type(self.unit_type)} {self.unit_location}"
+        order = f"{self.unit_type} {self.unit_location} {self.type}"
+        if self.type == Order.MOVE:
+            order += f" {self.end_dest}"
+        if self.type <= Order.MOVE:
+            # Hold and move
+            return order
+        
+        order += f" {self.helped_u_type} {self.helped_u_location} {Order._string_from_type(self.type)}"
+        if self.type == Order.SUPPORT and self.end_dest == self.helped_u_location:
+            # Support-hold
+            return order
+        # Support-move, convoy
+        return order + f" {self.end_dest}"
+        
 
     def __init__(self, ord_type, unit, end_destination=None, helped_unit=None):
         """
@@ -100,6 +148,16 @@ class Unit:
                 return Unit.FLEET
             case _:
                 return Unit.ARMY
+    
+    @staticmethod
+    def string_from_type(unit_type):
+        match unit_type:
+            case Unit.ARMY:
+                return 'A'
+            case Unit.FLEET:
+                return 'F'
+            case _:
+                raise ValueError("This class only implements Army and Fleet types, and that was neither!")
 
     def __init__(self, unit_type, unit_location, unit_team):
         self.type = unit_type
