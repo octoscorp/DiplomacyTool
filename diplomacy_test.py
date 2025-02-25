@@ -7,10 +7,16 @@ suite they wish to use can interface with TestRunner.
 Author: G Hampton
 Date: 24/02/2025
 """
+import json_loader
+import diplomacy_utils
+
 from colorama import init as colorama_init
 from colorama import Fore, Back, Style
-import json_loader 
 
+# "Public" consts
+DEFAULT_TEST_FILE = "./data/test_cases/DATC_3.1.json"
+
+# "Private" consts
 FAIL = 0
 WARN = 1
 SUCCESS = 2
@@ -18,18 +24,6 @@ CONTEXT = 4
 HIGHLIGHT = 8
 # These two should always be the highest; adding them together ensures no collision
 NORMAL = HIGHLIGHT + CONTEXT
-
-class Order:
-    BUILD = 0
-    HOLD = 1
-    MOVE = 2
-    SUPPORT = 3
-    CONVOY = 4
-
-class Phase:
-    WINTER = 0
-    SPRING = 1
-    AUTUMN = 2
 
 def load_test_cases(filepath):
     required_structure = []
@@ -241,7 +235,7 @@ def main():
     import sys
 
     silenced = False
-    test_file = "./data/test_cases/DATC_3.1.json"
+    test_file = DEFAULT_TEST_FILE
 
     # Very rough command-line parsing
     if len(sys.argv) > 1:

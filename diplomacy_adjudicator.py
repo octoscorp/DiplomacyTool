@@ -4,12 +4,6 @@ Class for adjudicating Diplomacy moves
 Date: 10/6/2024
 Author: G Hampton
 """
-PHASES = [
-    "spring",
-    "autumn",
-    "winter",
-]
-
 class DiplomacyAdjudicator():
     def __init__(self, adjacency, territories, units):
         self.adjacency = adjacency
@@ -352,8 +346,41 @@ class DiplomacyAdjudicator():
                 if from_coast == None or from_coast != unit_from_coast:
                     continue
             return to_coast
+    
+    def test_remove_all_units(self):
+        pass
 
-                
+    def test_create_unit(self):
+        pass
+
+    def test_set_phase(self):
+        pass
+
+    def test_string_to_order(self):
+        pass
+
+    def test_order_to_string(self):
+        pass
+
+    def test_adjudicate_moveset(self):
+        pass
+
+
+
+class DefaultAdjudicator():
+    """A wrapper to allow instantiation with no init arguments. Useful in decoupling tests"""
+    __init__(self):
+        import json_loader
+        from display_object import Territory
+        data = json_loader.load_from_JSON("./Maps/default.json", True)
+
+        # Create territories
+        territories = {}
+        for name in data["map_data"].keys():
+            territories[name] = Territory(None, name, [], data["map_data"][name], is_test=True)
+
+        return DiplomacyAdjudicator(data["adjacency"], territories, units={})
+
 def split_coast(location):
     from_coast = None
     to_coast = None
@@ -369,25 +396,10 @@ def split_coast(location):
             to_coast = parts[1]
     return from_coast, location, to_coast
 
-#=============================================================
-# Test cases
 def run_tests():
-    from DATC import DATC_Tester
-    adj = setup_test_adjudicator()
-    tester = DATC_Tester(adj)
-    tester.display_test_results()
-
-def setup_test_adjudicator():
-    import map_loader
-    from display_object import Territory
-    data = map_loader.load_from_JSON("./Maps/default.json", True)
-
-    # Create territories
-    territories = {}
-    for name in data["map_data"].keys():
-        territories[name] = Territory(None, name, [], data["map_data"][name], is_test=True)
-
-    return DiplomacyAdjudicator(data["adjacency"], territories, units={})
+    # Default test case is latest DATC
+    import diplomacy_test
+    diplomacy_test.main()
 
 if __name__ == "__main__":
     run_tests()
