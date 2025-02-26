@@ -6,29 +6,94 @@ Author: G Hampton
 """
 import diplomacy_utils
 
+
+class BaseAdjudicator():
+    """
+    An interface, which adjudicators should extend. Implements stubs of all test-interfacing methods
+    """
+    def __init__(self):
+        self.phase = Phase.SPRING
+        self.units = {}
+
+    # Override this!
+    def adjudicate_moveset(self, moveset):
+        raise NotImplementedError
+    
+    def set_units(self, new_units):
+        """ Replace existing unit dict with new_units """
+        self.units = new_units
+    
+    def add_unit(self, unit):
+        if unit.team not in self.units.keys():
+            self.units[unit.team] = []
+        self.units[unit.team].append(unit)
+
+    # Tester interface
+    def test_remove_all_units(self):
+        self.set_units({})
+
+    def test_create_unit(self, unit):
+        self.add_unit(Unit(
+            Unit.type_from_string(unit["type"]),
+            unit["location"],
+            unit["team"]
+        ))
+
+    def test_set_phase(self, phase):
+        self.phase = phase
+
+    def test_string_to_order(self, string):
+        return Order.from_string(string)
+
+    def test_order_to_string(self, order):
+        # Verify that the tester has given an actual Order (isinstance should allow for subclasses too)
+        assert(isinstance(order, Order))
+        return str(order)
+
+    def test_adjudicate_moveset(self, moveset):
+        # Check that the tester has sent the moveset in a structure we expect
+        # {
+        #     "TEAM": [
+        #         "Order1",
+        #         "..."
+        #     ]
+        # }
+        for team in moveset.keys():
+            assert(type(moveset[team]) is list)
+            for order in moveset[team]:
+                assert(isinstance(order, Order))
+        return self.adjudicate_moveset(moveset)
+    
+    # Optionally override to define your own intentional failures.
+    def test_get_intentional_failures(self):
+        """
+        This function returns a list of the test cases which this adjudicator fails intentionally.
+        Format:
+        {
+            MODULE_NAME: [
+                (index, reason)
+            ]
+        }
+        """
+        return {}
+
+
 class DiplomacyAdjudicator(BaseAdjudicator):
-    # TODO: remove double-ups of Base functionality
-    # TODO: add utils usage
     def __init__(self, adjacency, territories, units):
+        super()
         self.adjacency = adjacency
         self.territories = territories
-        self.units = units
+        self.set_units(units)
+
         self.retreats = []
-        self.phase = Phase.WINTER
         self.counts_last_round = {team: 0 for team in units.keys()}
         for name in self.territories.keys():
             team = self.territories[name].owned_by
             if team:
                 self.counts_last_round[team] += 1
-
-    def update_units(self, units):
-        self.units = units
-    
-    def update_territories(self, territories):
-        self.territories = territories
     
     def step_phase(self):
-        self.phase = (self.phase + 1) % len(PHASES)
+        self.phase = Phase.get_next_phase(self.phase)
     
     def get_changes(self):
         return {
@@ -39,6 +104,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         valid = []
         changes = self.get_changes()
 
+        # TODO: get str-manipulating splits out of this functionality, decouple
         for build in orders:
             name = build.location_1.split('-')[0]
             team = self.territories[name].owned_by if not build.unit else build.unit.team
@@ -47,10 +113,10 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                 continue
 
             if changes[team] > 0:
-                if build.type != "build":
+                if build.type != Order.BUILD:
                     continue
                 # Build
-                if self.territories[name].type == "land" and build.build_type == "Fleet":
+                if self.territories[name].type == Territory.LAND and build.build_type == Unit.FLEET:
                     continue
                 if team == self.territories[name].buildable_for:
                     flag = False
@@ -63,14 +129,14 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                         continue
                     valid.append(build)
             if changes[team] < 0:
-                if build.type != "disband":
+                if build.type != Order.DISBAND:
                     continue
                 # Disband
                 valid.append(build)
         return valid
 
     def adjudicate_moveset(self, orders, allow_retreats=True):
-        if self.get_current_phase() == "winter":
+        if self.get_current_phase() == Phase.WINTER:
             return self.adjudicate_builds(orders)
         check_for_convoys = []
         moves = []
@@ -82,17 +148,17 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         for order in orders:
             is_valid = self.validate_order(order)
             if not is_valid:
-                if order.type == "move" and order.location_1 != order.location_2 and order.unit.type == "Army":
+                if order.type == Order.MOVE and order.location_1 != order.location_2 and order.unit.type == Unit.ARMY:
                     check_for_convoys.append(order)
                 continue
             match order.type:
-                case "move":
+                case Order.MOVE:
                     moves.append(order)
-                case "support":
+                case Order.SUPPORT:
                     supports.append(order)
-                case "convoy":
+                case Order.CONVOY:
                     convoys.append(order)
-                case "hold":
+                case ORDER.HOLD:
                     holds.append(order)
         
         convoyed = self.check_convoys(check_for_convoys, convoys)
@@ -128,7 +194,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                         # This support is cut!
                         if support.supported_order:
                             support.supported_order.remove_strength()
-                        holds.append(support.unit.give_order("hold", support.unit.location, support.unit.location))
+                        holds.append(support.unit.give_order(Order.HOLD, support.unit.location, support.unit.location))
                         cut = True
                         break
                 elif move.location_1 == support.location_1 and move.location_2 == support.location_2:
@@ -168,7 +234,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
             m = []
             h = None
             for order in contests[name]:
-                if order.type == "move"and order in moves:
+                if order.type == Order.MOVE and order in moves:
                     moves.remove(order)
                     m.append(order)
                 else:
@@ -180,12 +246,12 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                 if h:
                     if h.strength < best_move.strength:
                         match h.type:
-                            case "hold":
+                            case Order.HOLD:
                                 holds.remove(h)
-                            case "support":
+                            case Order.SUPPORT:
                                 print("Support gets broken here, but still detected as move?")
                                 supports.remove(h)
-                            case "convoy":
+                            case Order.CONVOY:
                                 convoys.remove(h)
                         retreats.append(h)
                     else:
@@ -194,7 +260,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                     m.remove(best_move)
                     moves.append(best_move)
             for move in m:
-                holds.append(move.unit.give_order("hold", move.unit.location, move.unit.location))
+                holds.append(move.unit.give_order(Order.HOLD, move.unit.location, move.unit.location))
             return retreats
         
             
@@ -228,8 +294,8 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                     moves.remove(move)
                 if counterpart in moves:
                     moves.remove(counterpart)
-                holds.append(move.unit.give_order("hold", move.unit.location, move.unit.location))
-                holds.append(counterpart.unit.give_order("hold", counterpart.unit.location, counterpart.unit.location))
+                holds.append(move.unit.give_order(Order.HOLD, move.unit.location, move.unit.location))
+                holds.append(counterpart.unit.give_order(Order.HOLD, counterpart.unit.location, counterpart.unit.location))
         del contests['opposed']
 
     def check_convoys(self, moves_to_check, convoys):
@@ -276,14 +342,14 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         legal_moves = self.get_legal_moves_for_unit(order.unit.type, order.unit.location)
         is_valid = False
         match order.type:
-            case "move":
+            case Order.MOVE:
                 is_valid = self._validate_move(order, legal_moves)
-            case "support":
+            case Order.SUPPORT:
                 # Conveniently, supports have the same validation criteria as moves
                 is_valid = self._validate_move(order, legal_moves)
-            case "convoy":
+            case Order.CONVOY:
                 is_valid = self._validate_convoy(order)
-            case "hold":
+            case Order.HOLD:
                 is_valid = True
         return is_valid
     
@@ -296,16 +362,17 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         return False
     
     def _validate_convoy(self, order):
-        return self.territories[order.unit.location].type == "ocean" and \
-            self.territories[order.location_1].type in ["canal", "coast"] and \
-            self.territories[order.location_2].type in ["canal", "coast"]
+        shared_types = [Territory.CANAL, Territory.COAST]
+        return self.territories[order.unit.location].type == Territory.OCEAN and \
+            self.territories[order.location_1].type in shared_types and \
+            self.territories[order.location_2].type in shared_types
 
     def get_legal_moves_for_unit(self, unit_type, unit_location):
         legal_moves = []
-        if unit_type == "Army":
-            valid_spaces = ["land", "canal", "coast"]
-        if unit_type == "Fleet":
-            valid_spaces = ["coast", "ocean", "canal"]
+        if unit_type == Unit.ARMY:
+            valid_spaces = [Territory.CANAL, Territory.COAST, Territory.LAND]
+        if unit_type == Unit.FLEET:
+            valid_spaces = [Territory.CANAL, Territory.COAST, Territory.OCEAN]
 
         _, unit_location, unit_from_coast = split_coast(unit_location)
 
@@ -317,6 +384,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
             territory = self.territories[location]
             if territory.type in valid_spaces:    
                 if to_coast:
+                    # TODO: str-format
                     location = f'{location}-{to_coast}'
                 legal_moves.append(location)
         
@@ -346,73 +414,6 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                 ("6.B.7", "Usage in face-to-face play should be a little more generous"),    # Supporting own unit with unspecified coast - this is intended for use in face-to-face play, so is a little more generous.
             ],
         }
-
-class BaseAdjudicator():
-    """
-    An interface, which adjudicators should extend. Implements stubs of all test-interfacing methods
-    """
-    def __init__(self):
-        self.phase = Phase.SPRING
-        self.units = {}
-
-    # Override this!
-    def adjudicate_moveset(self, moveset):
-        raise NotImplementedError
-
-    # Tester interface
-    def test_remove_all_units(self):
-        self.units = {}
-
-    def test_create_unit(self, unit):
-        u = Unit(
-            Unit.type_from_string(unit["type"]),
-            unit["location"],
-            unit["team"]
-        )
-
-        # Add to own units
-        if unit["team"] not in self.units.keys():
-            self.units[unit["team"]] = []
-        self.units[unit["team"]].append(u)
-
-    def test_set_phase(self, phase):
-        self.phase = phase
-
-    def test_string_to_order(self, string):
-        return Order.from_string(string)
-
-    def test_order_to_string(self, order):
-        # Verify that the tester has given an actual Order (isinstance should allow for subclasses too)
-        assert(isinstance(order, Order))
-        return str(order)
-
-    def test_adjudicate_moveset(self, moveset):
-        # Check that the tester has sent the moveset in a structure we expect
-        # {
-        #     "TEAM": [
-        #         "Order1",
-        #         "..."
-        #     ]
-        # }
-        for team in moveset.keys():
-            assert(type(moveset[team]) is list)
-            for order in moveset[team]:
-                assert(isinstance(order, Order))
-        return self.adjudicate_moveset(moveset)
-    
-    # Optionally override to define your own intentional failures.
-    def test_get_intentional_failures(self):
-        """
-        This function returns a list of the test cases which this adjudicator fails intentionally.
-        Format:
-        {
-            MODULE_NAME: [
-                (index, reason)
-            ]
-        }
-        """
-        return {}
-
 
 
 class DefaultAdjudicator():
@@ -449,6 +450,7 @@ def split_coast(location):
     return from_coast, location, to_coast
 
 def run_tests():
+    '''Acceptance testing'''
     # Default test case is latest DATC
     import diplomacy_test
     diplomacy_test.main()

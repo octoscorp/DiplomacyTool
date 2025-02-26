@@ -6,7 +6,7 @@ Implements stub classes for Phase, Order, Unit, and Territory. This should allow
 implementations to abstract away some of the basic functionality, and draw on base
 enums for type.
   Phase: WINTER, SPRING, AUTUMN
-  Order: BUILD, HOLD, MOVE, SUPPORT, CONVOY
+  Order: DISBAND, BUILD, HOLD, MOVE, SUPPORT, CONVOY
   Unit: ARMY, FLEET
   Territory: LAND, OCEAN, COAST, CANAL
 """
@@ -25,11 +25,12 @@ class Phase:
 
 class Order:
     # Types of order
-    BUILD = 0
-    HOLD = 1
-    MOVE = 2
-    SUPPORT = 3
-    CONVOY = 4
+    DISBAND = 0
+    BUILD = 1
+    HOLD = 2
+    MOVE = 3
+    SUPPORT = 4
+    CONVOY = 5
 
     @staticmethod
     def from_string(order_string):
@@ -42,13 +43,14 @@ class Order:
         - Support: "F BLA S A BUL -> CON"
         - Convoy: "F AEG C A BUL -> CON"
         - Build: "build F CON"
+        - Disband: "disband A BUL"
 
         Counterpart accomplished with __str__
         """
 
         parts = order_string.split()
-        if parts[0] == "build":
-            return Order(Order.BUILD, (Unit.type_from_string(parts[1]), parts[2]))
+        if parts[0] in ["disband", "build"]:
+            return Order(Order._type_from_string(parts[0]), (Unit.type_from_string(parts[1]), parts[2]))
         
         ord_unit = (Unit.type_from_string(parts[0]), parts[1])
         ord_type = Order._type_from_string(parts[2])
@@ -70,6 +72,8 @@ class Order:
     @staticmethod
     def _type_from_string(order_partial_string):
         match order_partial_string:
+            case 'disband':
+                return Order.DISBAND
             case 'build':
                 return Order.BUILD
             case 'H':
@@ -88,6 +92,8 @@ class Order:
         match order_type:
             case Order.BUILD:
                 return 'build'
+            case Order.DISBAND:
+                return 'disband'
             case Order.HOLD:
                 return 'H'
             case Order.MOVE:
@@ -101,8 +107,8 @@ class Order:
     
     def __str__(self):
         """ Create the string representation of this order """
-        if self.type == Order.BUILD:
-            return f"build {Unit.string_from_type(self.unit_type)} {self.unit_location}"
+        if self.type in [Order.BUILD, Order.DISBAND]:
+            return f"{Order._string_from_type(self.type)} {Unit.string_from_type(self.unit_type)} {self.unit_location}"
         order = f"{self.unit_type} {self.unit_location} {self.type}"
         if self.type == Order.MOVE:
             order += f" {self.end_dest}"
