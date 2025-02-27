@@ -8,7 +8,7 @@ Author: G Hampton
 Date: 24/02/2025
 """
 import json_loader
-import diplomacy_utils
+from diplomacy_utils import Order, Phase
 
 from colorama import init as colorama_init
 from colorama import Fore, Back, Style
@@ -16,46 +16,50 @@ from colorama import Fore, Back, Style
 # "Public" consts
 DEFAULT_TEST_FILE = "./data/test_cases/DATC_3.1.json"
 
-# "Private" consts
-FAIL = 0
-WARN = 1
-SUCCESS = 2
-CONTEXT = 4
-HIGHLIGHT = 8
-# These two should always be the highest; adding them together ensures no collision
-NORMAL = HIGHLIGHT + CONTEXT
+class _TxtFormat:
+    FAIL = 1
+    WARN = 2
+    SUCCESS = 4
+    CONTEXT = 8
+    HIGHLIGHT = 16
+    
+    _H_FAIL = HIGHLIGHT + FAIL
+    _H_WARN = HIGHLIGHT + WARN
+    _H_SUCCESS = HIGHLIGHT + SUCCESS
+
+    # These two should always be the highest; adding them together ensures no collision
+    NORMAL = HIGHLIGHT + CONTEXT
+
+    def format_text(text, format):
+        """
+        Permit format keywords. The keywords allowed are:
+        - success: bold green text, default bg
+        """
+        tags = ""
+        match format:
+            case _TxtFormat.FAIL:
+                tags += Fore.RED
+            case _TxtFormat.WARN:
+                tags += Fore.YELLOW
+            case _TxtFormat.SUCCESS:
+                tags += Fore.GREEN
+            
+            case _TxtFormat._H_FAIL:
+                tags += Back.RED + Style.BRIGHT
+            case _TxtFormat._H_WARN:
+                tags += Back.YELLOW + Style.BRIGHT
+            case _TxtFormat._H_SUCCESS:
+                tags += Back.GREEN + Style.BRIGHT
+            case _TxtFormat.CONTEXT:
+                tags += Style.DIM
+            case _:
+                # Don't tag meaninglessly
+                return text
+        return f"{tags}{text}{Style.RESET_ALL}"
 
 def load_test_cases(filepath):
     required_structure = []
-    json_loader.load_from_JSON(filepath, required_structure)
-
-    return json_data
-
-def format_text(text, format):
-    """
-    Permit format keywords. The keywords allowed are:
-    - success: bold green text, default bg
-    """
-    tags = ""
-    match color:
-        case FAIL:
-            tags += Fore.RED
-        case WARN:
-            tags += Fore.YELLOW
-        case SUCCESS:
-            tags += Fore.GREEN
-        case HIGHLIGHT + FAIL:
-            tags += Back.RED + Style.BRIGHT
-        case HIGHLIGHT + WARN:
-            tags += Back.YELLOW + Style.BRIGHT
-        case HIGHLIGHT + SUCCESS:
-            tags += Back.GREEN + Style.BRIGHT
-        case CONTEXT:
-            tags += Style.DIM
-        case _:
-            # Don't tag meaninglessly
-            return text
-    return f"{tags}{text}{Style.RESET_ALL}"
+    return json_loader.load_from_JSON(filepath, required_structure)
 
 class AdjudicatorTestInterface():
     def __init__(self, adjudicator):
@@ -107,7 +111,7 @@ class AdjudicatorTestInterface():
                 return Order.SUPPORT
             case "C":
                 return Order.CONVOY
-            _:
+            case _:
                 return Order.HOLD
 
     def setup(self, test_case):
@@ -154,17 +158,17 @@ class TestRunner():
             self.adj_int.setup(test_case)
             result_moveset = self.adj_int.enter_orders_and_run(test_case)
             assert self.is_same_moves(test_case["result_moves"], result_moveset)
-            state = SUCCESS
+            state = _TxtFormat.SUCCESS
         except AssertionError:
             # Check for test cases intentionally failed
-            state = FAIL
+            state = _TxtFormat.FAIL
             reason = self.adj_int.check_for_intentional_fail(test_case, self.test_module)
-            if reason !== False:
+            if reason != False:
                 # Intentional, mitigate failure
-                state = WARN
+                state = _TxtFormat.WARN
         finally:
-            if !quiet:
-                self.show_test_case(test_case, state, reason, moves)
+            if not quiet:
+                self.show_test_case(test_case, state, reason, result_moveset)
         return state
 
     def display_test_results(self, quiet=False):
@@ -177,9 +181,9 @@ class TestRunner():
             for test_case in section["test_cases"]:
                 total += 1
                 match self._evaluate_test_case(test_case, quiet):
-                    case FAIL:
+                    case _TxtFormat.FAIL:
                         fail_count += 1
-                    case WARNING:
+                    case _TxtFormat.WARNING:
                         warning_count += 1
         
         self.show_summary(total, fail_count, warning_count)
@@ -199,44 +203,44 @@ class TestRunner():
         print("=" * 50)
         print(section_title)
 
-    def _print_orders(self, orders, state=NORMAL):
+    def _print_orders(self, orders, state=_TxtFormat.NORMAL):
         for orderset in orders:
             team_name = orders["team"]
             moves = orders["moveset"]
             
-            print(format_text(f"{team_name}:", state))
+            print(_TxtFormat.format_text(f"{team_name}:", state))
             for move in moves:
-                print(format_text(f"  {move}", state))
+                print(_TxtFormat.format_text(f"  {move}", state))
             print()
 
     def show_test_case(self, test_case, state, reason, moves_made):
         print("-" * 50)
         # Header
-        print(format_text(test_case["title"], state + HIGHLIGHT))
+        print(_TxtFormat.format_text(test_case["title"], state + _TxtFormat.HIGHLIGHT))
 
         # Orders for context
-        self._print_orders(test_case["orders"], CONTEXT)
-        if state < SUCCESS:
+        self._print_orders(test_case["orders"], _TxtFormat.CONTEXT)
+        if state < _TxtFormat.SUCCESS:
             print("!" * 8)
             print("Expected results:")
             self._print_orders(test_case["result_moves"])
             print("-")
             print("Actual results:")
             self._print_orders(moves_made, state)
-            if state == WARN:
+            if state == _TxtFormat.WARN:
                 reason = reason if reason else "No reason given."
                 print("-" * 3)
-                print(format_text(f"Reason: {reason}", WARN))
+                print(_TxtFormat.format_text(f"Reason: {reason}", _TxtFormat.WARN))
         print()
     
     def show_summary(self, total, fails, warnings):
-        overall_state = FAIL if fails > 0 else SUCCESS
-        print(format_text('=' * 50 + "\nSUMMARY", overall_state))
+        overall_state = _TxtFormat.FAIL if fails > 0 else _TxtFormat.SUCCESS
+        print(_TxtFormat.format_text('=' * 50 + "\nSUMMARY", overall_state))
         print()
-        print(format_text(f"{total - fails - warnings} of {total} test cases passed.", overall_state))
+        print(_TxtFormat.format_text(f"{total - fails - warnings} of {total} test cases passed.", overall_state))
         if warnings > 0:
-            print(format_text(f"  - Of which {warnings} were intentional.", WARN))
-        print(format_text('=' * 50), overall_state)
+            print(_TxtFormat.format_text(f"  - Of which {warnings} were intentional.", _TxtFormat.WARN))
+        print(_TxtFormat.format_text('=' * 50), overall_state)
 
 def main():
     from diplomacy_adjudicator import DefaultAdjudicator
@@ -255,7 +259,7 @@ def main():
         test_file = sys.argv[1]
 
     # DefaultAdjudicator is a shortcut which allows test interfaces to ignore implementation details and needs no arguments
-    test_adj = DefaultAdjudicator(no_units=True)
+    test_adj = DefaultAdjudicator()
     runner = TestRunner(test_adj, test_file)
 
     runner.display_test_results(silenced)

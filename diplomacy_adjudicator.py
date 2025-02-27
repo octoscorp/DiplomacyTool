@@ -4,19 +4,25 @@ Class for adjudicating Diplomacy moves
 Date: 10/6/2024
 Author: G Hampton
 """
-import diplomacy_utils
+from diplomacy_utils import Order, Phase, Unit, Territory
 
 
 class BaseAdjudicator():
     """
-    An interface, which adjudicators should extend. Implements stubs of all test-interfacing methods
+    An interface, which adjudicators should extend. Implements stubs of all test-interfacing methods and
+    some bare-minimum methods and attributes to interact with them
     """
     def __init__(self):
         self.phase = Phase.SPRING
         self.units = {}
 
-    # Override this!
     def adjudicate_moveset(self, moveset):
+        """
+        Return a set of the moves which succeed.
+        If your adjudicator returns other moves (e.g. valid supports), override
+        the test_adjudicate_moveset to filter only moves before returning
+        """
+        # Override this method!
         raise NotImplementedError
     
     def set_units(self, new_units):
@@ -51,7 +57,7 @@ class BaseAdjudicator():
         return str(order)
 
     def test_adjudicate_moveset(self, moveset):
-        # Check that the tester has sent the moveset in a structure we expect
+        # Check that the tester has sent the moveset in a structure we expect, i.e.
         # {
         #     "TEAM": [
         #         "Order1",
@@ -135,7 +141,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                 valid.append(build)
         return valid
 
-    def adjudicate_moveset(self, orders, allow_retreats=True):
+    def adjudicate_moveset(self, orders):
         if self.get_current_phase() == Phase.WINTER:
             return self.adjudicate_builds(orders)
         check_for_convoys = []
@@ -158,7 +164,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                     supports.append(order)
                 case Order.CONVOY:
                     convoys.append(order)
-                case ORDER.HOLD:
+                case Order.HOLD:
                     holds.append(order)
         
         convoyed = self.check_convoys(check_for_convoys, convoys)
@@ -167,8 +173,6 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         self.add_support(supports, moves, holds, convoys)
         retreats = self.compare_strength(supports, moves, holds, convoys)
         self.remove_broken_convoys(convoyed, moves, convoys)
-        if allow_retreats:
-            self.retreats = retreats
         return moves
 
     def remove_broken_convoys(self, convoyed, moves, convoys):
@@ -354,17 +358,17 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         return is_valid
     
     def _validate_move(self, order, legal_moves):
-        if order.location_1 == order.location_2:
+        if order.unit_location == order.get_target():
             return False
         for move in legal_moves:
-            if move == order.location_2:
+            if move == order.get_target():
                 return True
         return False
     
     def _validate_convoy(self, order):
         shared_types = [Territory.CANAL, Territory.COAST]
-        return self.territories[order.unit.location].type == Territory.OCEAN and \
-            self.territories[order.location_1].type in shared_types and \
+        return self.territories[order.unit_location].type == Territory.OCEAN and \
+            self.territories[order.unit_location].type in shared_types and \
             self.territories[order.location_2].type in shared_types
 
     def get_legal_moves_for_unit(self, unit_type, unit_location):
@@ -421,16 +425,19 @@ class DefaultAdjudicator():
     A wrapper to allow instantiation with no init arguments. Useful in decoupling tests.
     Does NOT have any units loaded to start with.
     """
-    __init__(self):
+    def __init__(self):
         import json_loader
-        from display_object import Territory
-        data = json_loader.load_from_JSON("./data/maps/default.json", True)
+        data = json_loader.load_from_JSON("./data/maps/default.json")
 
         # Create territories
         territories = {}
         for name in data["map_data"].keys():
-            # TODO: Fix territory definition
-            territories[name] = Territory(None, name, [], data["map_data"][name], is_test=True)
+            territory = data["map_data"][name]
+            territories[name] = Territory(name,
+                                          supply_centre=territory["is_supply_centre"],
+                                          type=Territory.type_from_string(territory["type"]),
+                                          # TODO: add adjacencies here, or remove from territories
+                                          full_name=territory["full_name"])
 
         return DiplomacyAdjudicator(data["adjacency"], territories, units={})
 

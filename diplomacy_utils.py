@@ -19,8 +19,8 @@ class Phase:
 
     @staticmethod
     def get_next_phase(current_phase):
-        if current_phase == _last_phase:
-            return _first_phase
+        if current_phase == Phase._last_phase:
+            return Phase._first_phase
         return current_phase + 1
 
 class Order:
@@ -140,6 +140,39 @@ class Order:
         self._helped_u_type = helped_unit[0]
         self._helped_u_location = helped_unit[1]
 
+        # Fancy rubbish - different names for the same function. This feels a little silly for
+        # get methods in python (since the variables are all public anyway), but would be a
+        # great format for set methods.
+        self.get_move_destination = self._get_end_dest
+        self.get_supported_unit_destination = self._get_end_dest
+        self.get_convoyed_unit_destination = self._get_end_dest
+
+        self.get_supported_unit_type = self._get_helped_u_type
+        self.get_convoyed_unit_type = self._get_helped_u_type
+
+        self.get_supported_unit_start_location = self._get_helped_u_location
+        self.get_convoyed_unit_start_location = self._get_helped_u_location
+    
+    # The following get function groups are effectively overloaded definitions, where the
+    # function name is changed instead of the arguments. Ideal syntax would be some
+    def _get_end_dest(self):
+        """
+        Return the destination of the move being made/supported/convoyed
+        """
+        return self._end_dest
+    
+    def _get_helped_u_type(self):
+        """
+        Return the type of the unit being supported/convoyed
+        """
+        return self._helped_u_type
+    
+    def _get_helped_u_location(self):
+        """
+        Return the location of the unit being supported/convoyed
+        """
+        return self._helped_u_location
+
 class Unit:
     # Type enumeration
     ARMY = 0
@@ -192,25 +225,56 @@ class Territory:
     COAST = 2
     CANAL = 3
 
+    @staticmethod
+    def type_from_string(type_string):
+        match type_string:
+            case 'land':
+                return Territory.LAND
+            case 'ocean':
+                return Territory.OCEAN
+            case 'coast':
+                return Territory.COAST
+            case 'canal':
+                return Territory.CANAL
+            case _:
+                raise ValueError("This only implements types LAND, OCEAN, CANAL, and COAST. That was none of these")
+    
+    # I see no use case for this method (especially in the adjudication end). Leaving it around for completeness.
+
+    # @staticmethod
+    # def string_from_type(territory_type):
+    #     match territory_type:
+    #         case Territory.LAND:
+    #             return 'land'
+    #         case Territory.OCEAN:
+    #             return 'ocean'
+    #         case Territory.COAST:
+    #             return 'coast'
+    #         case Territory.CANAL:
+    #             return 'canal'
+    #         case _:
+    #             raise ValueError("This only implements types LAND, OCEAN, CANAL, and COAST. That was none of these")
+
+
     def __init__(self,
             name,
             supply_centre=False,
             adjacency={
                 Unit.FLEET: [],
                 Unit.ARMY: []},
-            type=Territory.LAND,
+            type=LAND,
             full_name=None
             ):
         """
         Note that name should functionally be an index; full_name is decorative
         """
         # Arg handling
-        self.name
-        self._supply_centre
-        self._army_adjacent
-        self._fleet_adjacent
-        self._type
-        self.full_name = full_name if full_name !== None else name
+        self.name = name
+        self._supply_centre = supply_centre
+        self._army_adjacent = adjacency[Unit.ARMY]
+        self._fleet_adjacent = adjacency[Unit.ARMY]
+        self._type = type
+        self.full_name = full_name if full_name != None else name
     
     def is_supply_centre(self):
         """ Returns bool of whether this territory is a supply centre """
