@@ -2,24 +2,6 @@
 
 This is equivalent to the "Model" layer of MVC. 
 
-## Enums
-
-
-
-The enums currently implemented are:
-* Order
-    
-* Unit
-    * FLEET
-    * ARMY
-* Territory
-    * LAND
-    * OCEAN
-    * COAST
-    * CANAL
-* Phase
-    
-
 ## Class Stubs
 
 These are simplistic implementations of the classes, designed to provide some base functionality which is required by most things. In particular, they make use of static methods to define string conversions for the types. Additionally, by definining all-caps constants within classes, enums can be provided along with the class stubs. These can then be used by other classes to keep a consistent communication around these types (e.g. Order.DISBAND).
@@ -89,3 +71,30 @@ This defines orders issued and provides the capacity to convert between Order ob
     This is the inbuilt function that `str(object)` calls. By overriding it, we set our own definition of how the order converts to a string.
 
     The counterpart of this function is the static method `from_string`.
+
+### Unit
+
+#### Enum values
+
+* FLEET
+* ARMY
+
+#### Static Methods
+`string_from_type`
+Converts between strings and unit types: 'F' and 'A' become Unit.FLEET and Unit.ARMY 
+
+`type_from_string`
+
+### Territory
+
+#### Enum values
+
+* LAND
+* OCEAN
+* COAST
+* CANAL
+
+#### Static Methods
+
+`type_from_string`
+Converts between the string (expects one of "land", "ocean", "coast", "canal") and the corresponding enum value.
