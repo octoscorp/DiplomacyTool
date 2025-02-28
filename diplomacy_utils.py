@@ -226,6 +226,23 @@ class Territory:
     CANAL = 3
 
     @staticmethod
+    def get_coast(territory_string):
+        """
+        Get coast from a string
+        """
+        parts = territory_string.split('-')
+        if len(parts) == 1:
+            return None
+        return parts[1]
+    
+    @staticmethod
+    def remove_coast(territory_string):
+        """
+        Get the part of a string which does not include coast representation
+        """
+        return territory_string.split('-')[0]
+
+    @staticmethod
     def type_from_string(type_string):
         match type_string:
             case 'land':

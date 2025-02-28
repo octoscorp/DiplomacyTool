@@ -441,21 +441,6 @@ class DefaultAdjudicator():
 
         return DiplomacyAdjudicator(data["adjacency"], territories, units={})
 
-def split_coast(location):
-    from_coast = None
-    to_coast = None
-    if "-" in location:
-        parts = location.split("-")
-        if len(parts[0]) != 3:
-            from_coast = parts[0]
-            location = parts[1]
-            if len(parts[-1]) != 3:
-                to_coast = parts[-1]
-        else:
-            location = parts[0]
-            to_coast = parts[1]
-    return from_coast, location, to_coast
-
 def run_tests():
     '''Acceptance testing'''
     # Default test case is latest DATC
