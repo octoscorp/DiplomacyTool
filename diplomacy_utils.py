@@ -13,15 +13,32 @@ enums for type.
 
 class Phase:
     # Types of phase
-    WINTER = _first_phase = 0
-    SPRING = 1
-    AUTUMN = _last_phase = 2
+    BUILD = 0
+    STANDARD = 1
+    RETREAT = 2
+
+    # Usual Phases
+    WINTER = _first_phase = 10
+    SPRING = 11
+    AUTUMN = _last_phase = 12
 
     @staticmethod
     def get_next_phase(current_phase):
         if current_phase == Phase._last_phase:
             return Phase._first_phase
         return current_phase + 1
+
+    @staticmethod
+    def get_phase_type(phase):
+        match phase:
+            case Phase.WINTER:
+                return Phase.BUILD
+            case Phase.SPRING:
+                return Phase.STANDARD
+            case Phase.AUTUMN:
+                return Phase.STANDARD
+            case _:
+                raise ValueError(f"This base class only knows about Winter, Spring, and Autumn. {phase} is none of those.")
 
 class Order:
     # Types of order
@@ -143,6 +160,10 @@ class Order:
         # Fancy rubbish - different names for the same function. This feels a little silly for
         # get methods in python (since the variables are all public anyway), but would be a
         # great format for set methods.
+        self.get_move_start = self._get_u_location
+        self.get_supporting_unit_location = self._get_u_location
+        self.get_convoying_unit_location = self._get_u_location
+
         self.get_move_destination = self._get_end_dest
         self.get_supported_unit_destination = self._get_end_dest
         self.get_convoyed_unit_destination = self._get_end_dest
@@ -150,11 +171,14 @@ class Order:
         self.get_supported_unit_type = self._get_helped_u_type
         self.get_convoyed_unit_type = self._get_helped_u_type
 
-        self.get_supported_unit_start_location = self._get_helped_u_location
-        self.get_convoyed_unit_start_location = self._get_helped_u_location
+        self.get_supported_unit_start = self._get_helped_u_location
+        self.get_convoyed_unit_start = self._get_helped_u_location
     
     # The following get function groups are effectively overloaded definitions, where the
-    # function name is changed instead of the arguments. Ideal syntax would be some
+    # function name is changed instead of the arguments.
+    def _get_u_location(self):
+        return self.unit_location
+
     def _get_end_dest(self):
         """
         Return the destination of the move being made/supported/convoyed
@@ -290,7 +314,7 @@ class Territory:
         self._supply_centre = supply_centre
         self._army_adjacent = adjacency[Unit.ARMY]
         self._fleet_adjacent = adjacency[Unit.ARMY]
-        self._type = type
+        self.type = type
         self.full_name = full_name if full_name != None else name
     
     def is_supply_centre(self):

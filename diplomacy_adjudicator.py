@@ -24,11 +24,11 @@ class BaseAdjudicator():
         """
         # Override this method!
         raise NotImplementedError
-    
+
     def set_units(self, new_units):
         """ Replace existing unit dict with new_units """
         self.units = new_units
-    
+
     def add_unit(self, unit):
         if unit.team not in self.units.keys():
             self.units[unit.team] = []
@@ -69,7 +69,7 @@ class BaseAdjudicator():
             for order in moveset[team]:
                 assert(isinstance(order, Order))
         return self.adjudicate_moveset(moveset)
-    
+
     # Optionally override to define your own intentional failures.
     def test_get_intentional_failures(self):
         """
@@ -97,11 +97,12 @@ class DiplomacyAdjudicator(BaseAdjudicator):
             team = self.territories[name].owned_by
             if team:
                 self.counts_last_round[team] += 1
-    
+
     def step_phase(self):
         self.phase = Phase.get_next_phase(self.phase)
-    
+
     def get_changes(self):
+        """Really well-formatted way to get the change in number of SCs for each team"""
         return {
             team_name: len([self.territories[name] for name in self.territories.keys() if self.territories[name].owned_by == team_name]) - self.counts_last_round[team_name]
         for team_name in self.units.keys()}
@@ -112,8 +113,8 @@ class DiplomacyAdjudicator(BaseAdjudicator):
 
         # TODO: get str-manipulating splits out of this functionality, decouple
         for build in orders:
-            name = build.location_1.split('-')[0]
-            team = self.territories[name].owned_by if not build.unit else build.unit.team
+            location = build.unit_location
+            team = self.territories[Territory.remove_coast(location)].owned_by if not build.unit else build.unit.team
 
             if not team:
                 continue
@@ -121,14 +122,15 @@ class DiplomacyAdjudicator(BaseAdjudicator):
             if changes[team] > 0:
                 if build.type != Order.BUILD:
                     continue
-                # Build
-                if self.territories[name].type == Territory.LAND and build.build_type == Unit.FLEET:
+                # Fleets cannot be build inland
+                if self.territories[location].type == Territory.LAND and build.unit_type == Unit.FLEET:
                     continue
-                if team == self.territories[name].buildable_for:
+                if team == self.territories[location].buildable_for:
+                    # Do not allow building where there is already a unit
                     flag = False
                     for unit_team in self.units.keys():
                         for unit in self.units[unit_team]:
-                            if unit.location.split('-')[0] == name:
+                            if unit.location.split('-')[0] == location:
                                 flag = True
                                 break
                     if flag:
@@ -138,11 +140,13 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                 if build.type != Order.DISBAND:
                     continue
                 # Disband
+                # TODO: Check if team has a unit where it has ordered to disband.
                 valid.append(build)
         return valid
 
     def adjudicate_moveset(self, orders):
-        if self.get_current_phase() == Phase.WINTER:
+        # Overriding abstract implementation
+        if Phase.get_phase_type(self.get_current_phase()) == Phase.BUILD:
             return self.adjudicate_builds(orders)
         check_for_convoys = []
         moves = []
@@ -154,8 +158,10 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         for order in orders:
             is_valid = self.validate_order(order)
             if not is_valid:
-                if order.type == Order.MOVE and order.location_1 != order.location_2 and order.unit.type == Unit.ARMY:
-                    check_for_convoys.append(order)
+                if order.type == Order.MOVE and order.unit_type == Unit.ARMY:
+                    # A unit can't move to its own location
+                    if order.get_move_start() != order.get_move_destination():
+                        check_for_convoys.append(order)
                 continue
             match order.type:
                 case Order.MOVE:
@@ -166,7 +172,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                     convoys.append(order)
                 case Order.HOLD:
                     holds.append(order)
-        
+
         convoyed = self.check_convoys(check_for_convoys, convoys)
         moves += convoyed
         
@@ -176,6 +182,10 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         return moves
 
     def remove_broken_convoys(self, convoyed, moves, convoys):
+        """
+        For each convoyed move, remove all convoy routes which are not possible
+        due to not having a convoying unit on that route.
+        """
         convoying_locations = [convoy.unit.location for convoy in convoys]
         for move in convoyed:
             to_delete = []
@@ -189,147 +199,147 @@ class DiplomacyAdjudicator(BaseAdjudicator):
 
     def add_support(self, supports, moves, holds, convoys):
         """Add support to moves, holds, and convoys"""
-        for i in range(len(supports)):
-            support = supports[i]
-            cut = False
+        # For each support order
+        for support in supports:
+            # Set a flag "cut" to False
+            support_is_cut = False
+            # For each move order
             for move in moves:
-                if move.location_2 == support.unit.location:
-                    if support.location_2 != move.location_1 and support.unit.team != move.unit.team:
-                        # This support is cut!
-                        if support.supported_order:
-                            support.supported_order.remove_strength()
-                        holds.append(support.unit.give_order(Order.HOLD, support.unit.location, support.unit.location))
-                        cut = True
-                        break
-                elif move.location_1 == support.location_1 and move.location_2 == support.location_2:
-                    support.supported_order = move
-                    move.add_strength()
-            if cut:
-                break
-            for hold in holds:
-                if hold.location_1 == support.location_1:
-                    if hold.location_2 == support.location_2:
-                        support.supported_order = hold
-                        hold.add_strength()
-                    break
-            for convoy in convoys:
-                if support.location_1 == convoy.unit.location and support.location_2 == convoy.unit.location:
-                    convoy.add_strength()
+                if move.get_move_destination() == support.get_supporting_unit_location() and
+                        support.get_supported_unit_destination() != move.get_move_start() and
+                        move.team != support.team:
+                # If move destination == support origin and support destination != move origin and support team != move team
+                    # If support has a supported order
+                        # Remove strength 1 from that order
+                    # Add a hold order for this unit
+                    # Set cut to true
+                    # Stop searching through moves
+                # Elif move origin == supported origin and move dest == support dest
+                    # Set the support's supported order
+                    # Add strength 1 to that order
+            # If cut is raised
+                # Exit now
+            # For each hold order:
+                # If hold location = supported hold location
+                    # Set support's supported order
+                    # Add strength 1 to hold
+                    # break
+            # For each convoy
+                # If support start == convoy unit location and support is to hold
+                    # Set supported order; add strength 1
+        pass
 
     def compare_strength(self, supports, moves, holds, convoys):
-        contests = {"opposed": []}
-        retreats = []
-        for move in moves:
-            if move.location_2 not in contests.keys():
-                contests[move.location_2] = []
-            contests[move.location_2].append(move)
-            for move_2 in moves:
-                if move == move_2:
-                    continue
-                if (move_2.location_1 == move.location_2 and move_2.location_2 == move.location_1) or move.location_2 == move_2.location_2:
-                    contests["opposed"].append(move)
-        self._handle_opposed(contests, retreats, moves, holds)
-        for hold in holds + supports + convoys:
-            if hold.unit.location in contests.keys():
-                contests[hold.unit.location].append(hold)
-        
+        """Compare the strength of all orders"""
+        # Create a dict of contested locations called contests
+        # For each move
+            # if destination not in contests
+                # init to empty list
+
+            # add this move to contests for destination
+            # For each other move
+                # If it goes to the same destination, or attempts a direct swap with this move
+                    # Add it to opposed contests
+
+        # Handle the "opposed" moves
+        # For each hold (/support/convoy)
+            # If the location is in contests
+                # Add the hold order to the list
+
         # Determine which units win
-        for name in [key for key in contests.keys() if len(contests[key]) > 1]:
-            m = []
-            h = None
-            for order in contests[name]:
-                if order.type == Order.MOVE and order in moves:
-                    moves.remove(order)
-                    m.append(order)
-                else:
-                    h = order
+
+        # For each contested space
+            # for each order listed for that space
+                # create an individual list?
+                # if hold, add to own var?
+
+            # self._get_successful_move (moves)
+
+            # if that is not empty
+                # winning = True
+                # If there is still a hold
+                    # If hold strength < move strength
+                        # Remove hold from successful orders
+
+                        # Add hold to retreats
+                    # else:
+                        # winning = False
+                # if winning:
+                    # Remove winning move from local list
+            # For remaining local moves, enter a hold
             
-            best_move = self._get_successful_move(m)
-            if best_move:
-                winning = True
-                if h:
-                    if h.strength < best_move.strength:
-                        match h.type:
-                            case Order.HOLD:
-                                holds.remove(h)
-                            case Order.SUPPORT:
-                                print("Support gets broken here, but still detected as move?")
-                                supports.remove(h)
-                            case Order.CONVOY:
-                                convoys.remove(h)
-                        retreats.append(h)
-                    else:
-                        winning = False
-                if winning:
-                    m.remove(best_move)
-                    moves.append(best_move)
-            for move in m:
-                holds.append(move.unit.give_order(Order.HOLD, move.unit.location, move.unit.location))
-            return retreats
-        
-            
+            # Return retreats
+        pass
+
+
     def _get_successful_move(self, move_list):
-        if not move_list:
-            return None
-        if len(move_list) == 1:
-            return move_list[0]
-        order = sorted(move_list, reverse=True, key=lambda x: x.strength)
-        if order[0].strength > order[1].strength:
-            return order[0]
-        else:
-            return None
-            
+        """Return the move of `move_list` which is most successful"""
+        # If empty return None
+        # If len 1 return first
+        # sort by strength
+        # if first strength > second strength
+            # Return first
+        # return none
+        pass
+
     def _handle_opposed(self, contests, retreats, moves, holds):
-        while len(contests['opposed']) > 0:
-            move = contests['opposed'].pop()
-            for i in range(len(contests['opposed'])):
-                counterpart = contests['opposed'][i]
-                if counterpart.location_1 == move.location_2 and counterpart.location_2 == move.location_1:
-                    del contests['opposed'][i]
-                    break
-            if move.strength > counterpart.strength:
-                retreats.append(counterpart)
-                moves.remove(counterpart)
-            elif move.strength < counterpart.strength:
-                retreats.append(move)
-                moves.remove(move)
-            else:   # Bounce
-                if move in moves:
-                    moves.remove(move)
-                if counterpart in moves:
-                    moves.remove(counterpart)
-                holds.append(move.unit.give_order(Order.HOLD, move.unit.location, move.unit.location))
-                holds.append(counterpart.unit.give_order(Order.HOLD, counterpart.unit.location, counterpart.unit.location))
-        del contests['opposed']
+        # While there are opposing moves
+            # pop one
+            # For each other move
+                # If other start = move dest and move start = other dest
+                    # Remove from opposed; break
+            # if move strength > other strength:
+                # add move to success, other to retreats
+            # same other way around
+            # else:   # Bounce
+                # Remove move, other from successful moves
+                # add hold orders for both units
+        pass
 
     def check_convoys(self, moves_to_check, convoys):
+        """
+        Check `moves_to_check` for convoys. Remove any with no convoy support.
+        """
         convoyed_moves = []
         convoys_by_move = {}
+
+        # Collate convoys by the move that they are trying to convoy
         for convoy in convoys:
             if (convoy.location_1, convoy.location_2) not in convoys_by_move.keys():
                 convoys_by_move[(convoy.location_1, convoy.location_2)] = []
             convoys_by_move[(convoy.location_1, convoy.location_2)].append(convoy)
-        
+
+        # For each move, check if it's being convoyed.
         for move in moves_to_check:
             transport = (move.location_1, move.location_2)
             if transport not in convoys_by_move.keys():
                 break
+
+            # Get the relevant convoys and possible routes
             used_convoys = convoys_by_move[transport]
             routes = self.get_connecting_routes(move, used_convoys)
             if len(routes) > 0:
                 convoyed_moves.append(move)
+
+            # Add each route to the move order for future evaluation
             for route in routes:
                 move.convoy_routes.append(route)
 
+        # Return all moves which get convoyed
         return convoyed_moves
-    
+
     def get_connecting_routes(self, move, convoys):
+        """Get all possible convoy routes which connect move start to end"""
         convoy_locations = [convoy.unit.location for convoy in convoys]
         routes = []
         self.get_all_paths(move.location_1, move.location_2, [], [], routes, convoy_locations + [move.location_2])
         return routes
-    
+
     def get_all_paths(self, current, destination, visited, path, routes, convoy_locations):
+        """
+        Get all paths connecting start to end in fleet adjacency
+        TODO: Is this valid? Do we need to check that a coastal fleet cannot convoy?
+        """
         visited.append(current)
         path.append(current)
         if current == destination:
@@ -343,44 +353,56 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         path.remove(current)
 
     def validate_order(self, order):
-        legal_moves = self.get_legal_moves_for_unit(order.unit.type, order.unit.location)
+        """Return a boolean of whether an order is valid or not."""
+        legal_moves = self.get_legal_moves_for_unit(order.unit_type, order.unit_location)
         is_valid = False
         match order.type:
             case Order.MOVE:
                 is_valid = self._validate_move(order, legal_moves)
             case Order.SUPPORT:
-                # Conveniently, supports have the same validation criteria as moves
+                # This is exploiting the fact that get_move_destination and
+                # get_supported_unit_destination wrap the same function.
                 is_valid = self._validate_move(order, legal_moves)
             case Order.CONVOY:
                 is_valid = self._validate_convoy(order)
             case Order.HOLD:
                 is_valid = True
         return is_valid
-    
+
     def _validate_move(self, order, legal_moves):
-        if order.unit_location == order.get_target():
+        """Helper for validate_order. Check that the destination is reachable from here."""
+        if order.get_move_start() == order.get_move_destination():
             return False
         for move in legal_moves:
-            if move == order.get_target():
+            if move == order.get_move_destination():
                 return True
         return False
-    
+
     def _validate_convoy(self, order):
+        """
+        Helper for validate_order. Check that the convoying unit is in Ocean, and the
+        convoyed unit start/destination are on the shore.
+        """
         shared_types = [Territory.CANAL, Territory.COAST]
-        return self.territories[order.unit_location].type == Territory.OCEAN and \
-            self.territories[order.unit_location].type in shared_types and \
-            self.territories[order.location_2].type in shared_types
+        return self.territories[order.get_convoying_unit_location].type == Territory.OCEAN and \
+            self.territories[order.get_convoyed_unit_start].type in shared_types and \
+            self.territories[order.get_convoyed_unit_destination].type in shared_types
 
     def get_legal_moves_for_unit(self, unit_type, unit_location):
+        """
+        Return the set of legal locations for this unit to move given its type and starting location.
+        This set is stripped of coast.
+        """
         legal_moves = []
         if unit_type == Unit.ARMY:
-            valid_spaces = [Territory.CANAL, Territory.COAST, Territory.LAND]
+            valid_types = [Territory.CANAL, Territory.COAST, Territory.LAND]
         if unit_type == Unit.FLEET:
-            valid_spaces = [Territory.CANAL, Territory.COAST, Territory.OCEAN]
+            valid_types = [Territory.CANAL, Territory.COAST, Territory.OCEAN]
 
-        _, unit_location, unit_from_coast = split_coast(unit_location)
+        start_terr = Territory.remove_coast(unit_location)
+        start_coast = Territory.get_coast(unit_location)
 
-        for location in self.adjacency[unit_type.lower()][unit_location]:
+        for location in self.adjacency[unit_type][start_terr]:
             from_coast, location, to_coast = split_coast(location)
             if unit_from_coast != None:
                 if from_coast == None or from_coast != unit_from_coast:
@@ -391,9 +413,9 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                     # TODO: str-format
                     location = f'{location}-{to_coast}'
                 legal_moves.append(location)
-        
+
         return legal_moves
-    
+
     def get_legal_coast(self, unit_location, unit_destination):
         _, unit_location, unit_from_coast = split_coast(unit_location)
         if unit_destination == unit_location:
@@ -408,8 +430,8 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                 if from_coast == None or from_coast != unit_from_coast:
                     continue
             return to_coast
-    
-    # Override!
+
+    # Overriding!
     def test_get_intentional_failures(self):
         """ This function returns a list of the test cases which this adjudicator fails intentionally. """
         return {
