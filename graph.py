@@ -71,11 +71,10 @@ class AdjacencyMatrix(BaseAdjacencyStorage):
         return [node_1][node_2]
 
 class BaseGraph():
-    def __init__(self, node_list, adjacency_list, weights):
+    def __init__(self, adjacency_list, weights):
         """
         Base instance of a graph.
 
-        `node_list` - list of immutables suitable for dict keys
         `adjacency_list` - representation of edges as an adjacency list, e.g.
             {
                 "a": [],
@@ -94,12 +93,12 @@ class BaseGraph():
                 }
             }
         """
-        self.nodes = node_list
+        self.nodes = adjacency_list.keys()
         self.adj = adjacency_list
         self.weights = weights
 
         self._dijkstra_cache = {}
-    
+
     def get_adjacent(self, node):
         """
         Return a list of all nodes adjacent to `node`.
@@ -137,7 +136,7 @@ class BaseGraph():
                 if not visited[node]:
                     visited[node] = True
                     queue.append(node)
-        
+
         return order
 
     def depth_first_traversal(self, start):
@@ -146,7 +145,7 @@ class BaseGraph():
     def dijkstra(self, root, replace_cache=False):
         """
         Uses dijkstra's algorithm to find the shortest path from `root` to each other node.
-        
+
         Makes use of caching to avoid recalculating where possible. Set `replace_cache` to
         `True` to make the search ignore the cache. The function will overwrite the cache
         on completing a fresh search.
@@ -154,13 +153,13 @@ class BaseGraph():
         # Return cached value
         if root in self._dijkstra_cache.keys() and not replace_cache:
             return self._dijkstra_cache[root]
-        
+
         # Perform dijkstra's
         queue = []
         distance = {node: inf for node in self.nodes}
         distance[root] = 0
         heapq.heappush(queue, (0, root))
-        
+
         while queue:
             distance, current = heapq.heappop(queue)
             for neighbour in self.adj[current]:
@@ -173,20 +172,22 @@ class BaseGraph():
         # Add to cache and return
         self._dijkstra_cache[root] = distance
         return distance
-    
+
     # TODO: Add MST algorithms (why not)
     def prim(self):
         pass
-    
+
     def kruskal(self):
         pass
 
 class UnweightedGraph(BaseGraph):
-    def __init__(self, node_list, adjacency_list):
+    """
+    Base instance of an unweighted graph.
+    """
+    def __init__(self, adjacency_list):
         """
-        Base instance of an unweighted graph.
+        Create from adjacency list.
 
-        `node_list` - list of immutables suitable for dict keys
         `adjacency_list` - representation of edges as an adjacency list, e.g.
             {
                 "a": [],
@@ -196,9 +197,9 @@ class UnweightedGraph(BaseGraph):
         """
         # Kind of cheat by creating a graph with weights of all 1
         weights = {}
-        for node in node_list:
+        for node in adjacency_list.keys():
             weights[node] = {}
             for neighbour in adjacency_list[node]:
                 weights[node][neighbour] = 1
-        
-        return super(node_list, adjacency_list, weights)
+
+        return super(adjacency_list, weights)

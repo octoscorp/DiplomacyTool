@@ -11,6 +11,9 @@ enums for type.
   Territory: LAND, OCEAN, COAST, CANAL
 """
 
+from graph import UnweightedGraph
+
+
 class Phase:
     # Types of phase
     BUILD = 0
@@ -40,6 +43,7 @@ class Phase:
             case _:
                 raise ValueError(f"This base class only knows about Winter, Spring, and Autumn. {phase} is none of those.")
 
+
 class Order:
     # Types of order
     DISBAND = 0
@@ -53,7 +57,7 @@ class Order:
     def from_string(order_string):
         """
         Create an order from the given string.
-        
+
         Example order strings:
         - Hold: "A SMY H"
         - Move: "A BUL -> CON"
@@ -68,7 +72,7 @@ class Order:
         parts = order_string.split()
         if parts[0] in ["disband", "build"]:
             return Order(Order._type_from_string(parts[0]), (Unit.type_from_string(parts[1]), parts[2]))
-        
+
         ord_unit = (Unit.type_from_string(parts[0]), parts[1])
         ord_type = Order._type_from_string(parts[2])
 
@@ -76,16 +80,16 @@ class Order:
             return Order(ord_type, ord_unit)
         if ord_type == Order.MOVE:
             return Order(ord_type, ord_unit, end_destination=parts[3])
-        
+
         helped_unit = (Unit.type_from_string(parts[3]), parts[4])
         helped__ord_type = Order._type_from_string(parts[5])
         end_destination = parts[4]
 
         if helped__ord_type == Order.MOVE:
             end_destination = parts[6]
-        
+
         return Order(ord_type, ord_unit, end_destination=end_destination, helped_unit=helped_unit)
-    
+
     @staticmethod
     def _type_from_string(order_partial_string):
         match order_partial_string:
@@ -103,7 +107,7 @@ class Order:
                 return Order.CONVOY
             case _:
                 return Order.HOLD
-    
+
     @staticmethod
     def _string_from_type(order_type):
         match order_type:
@@ -121,7 +125,7 @@ class Order:
                 return 'C'
             case _:
                 raise ValueError('This implementation only handles orders for: BUILD, HOLD, MOVE, SUPPORT, and CONVOY. That was none of these.')
-    
+
     def __str__(self):
         """ Create the string representation of this order """
         if self.type in [Order.BUILD, Order.DISBAND]:
@@ -132,14 +136,14 @@ class Order:
         if self.type <= Order.MOVE:
             # Hold and move
             return order
-        
+
         order += f" {self.helped_u_type} {self.helped_u_location} {Order._string_from_type(self.type)}"
         if self.type == Order.SUPPORT and self.end_dest == self.helped_u_location:
             # Support-hold
             return order
         # Support-move, convoy
         return order + f" {self.end_dest}"
-        
+
 
     def __init__(self, ord_type, unit, end_destination=None, helped_unit=None):
         """
@@ -150,7 +154,7 @@ class Order:
         self.unit_type = unit[0]
         self.unit_location = unit[1]
         self.type = ord_type
-        
+
         # Optional args
         # End destination of move, support, or convoy
         self._end_dest = end_destination
@@ -173,7 +177,7 @@ class Order:
 
         self.get_supported_unit_start = self._get_helped_u_location
         self.get_convoyed_unit_start = self._get_helped_u_location
-    
+
     # The following get function groups are effectively overloaded definitions, where the
     # function name is changed instead of the arguments.
     def _get_u_location(self):
@@ -184,18 +188,19 @@ class Order:
         Return the destination of the move being made/supported/convoyed
         """
         return self._end_dest
-    
+
     def _get_helped_u_type(self):
         """
         Return the type of the unit being supported/convoyed
         """
         return self._helped_u_type
-    
+
     def _get_helped_u_location(self):
         """
         Return the location of the unit being supported/convoyed
         """
         return self._helped_u_location
+
 
 class Unit:
     # Type enumeration
@@ -211,7 +216,7 @@ class Unit:
                 return Unit.FLEET
             case _:
                 return Unit.ARMY
-    
+
     @staticmethod
     def string_from_type(unit_type):
         match unit_type:
@@ -220,20 +225,21 @@ class Unit:
             case Unit.FLEET:
                 return 'F'
             case _:
-                raise ValueError("This class only implements Army and Fleet types, and that was neither!")
+                raise ValueError(f"This class only implements Army and Fleet types, and {unit_type} was neither!")
 
-    def __init__(self, unit_type, unit_location, unit_team):
+    def __init__(self, unit_type, unit_location:str, unit_team):
         self.type = unit_type
         self.location = unit_location
         self.team = unit_team
 
         self._order = None
-    
+
     def set_order(self, order):
         self._order = order
-    
+
     def get_order(self):
         return self._order
+
 
 class Territory:
     """
@@ -258,7 +264,7 @@ class Territory:
         if len(parts) == 1:
             return None
         return parts[1]
-    
+
     @staticmethod
     def remove_coast(territory_string):
         """
@@ -279,7 +285,7 @@ class Territory:
                 return Territory.CANAL
             case _:
                 raise ValueError("This only implements types LAND, OCEAN, CANAL, and COAST. That was none of these")
-    
+
     # I see no use case for this method (especially in the adjudication end). Leaving it around for completeness.
 
     # @staticmethod
@@ -300,11 +306,9 @@ class Territory:
     def __init__(self,
             name,
             supply_centre=False,
-            adjacency={
-                Unit.FLEET: [],
-                Unit.ARMY: []},
             type=LAND,
-            full_name=None
+            full_name:str=None,
+            coasts:list[str]=None
             ):
         """
         Note that name should functionally be an index; full_name is decorative
@@ -312,11 +316,43 @@ class Territory:
         # Arg handling
         self.name = name
         self._supply_centre = supply_centre
-        self._army_adjacent = adjacency[Unit.ARMY]
-        self._fleet_adjacent = adjacency[Unit.ARMY]
         self.type = type
         self.full_name = full_name if full_name != None else name
-    
+        self.coasts = coasts if coasts != None else []
+
     def is_supply_centre(self):
         """ Returns bool of whether this territory is a supply centre """
         return self._supply_centre
+
+
+class TerritoryMap:
+    def __init__(self, territories, land_adjacency_list, sea_adjacency_list):
+        self.territories = territories
+
+        self.land = UnweightedGraph(land_adjacency_list)
+        self.sea = UnweightedGraph(sea_adjacency_list)
+
+    def get_neighbours(self, unit: Unit):
+        """
+        Unit is used with the expectation that if a unit doesn't exist for the requested location,
+        the move is invalid anyway.
+        """
+        if (unit.type == Unit.FLEET):
+            relevant_map = self.sea
+            location = unit.location
+        else:
+            relevant_map = self.land
+            # Armies don't care about coasts
+            location = Territory.remove_coast(unit.location)
+        return relevant_map.get_adjacent(location)
+
+    def get_territory_by_name(self, territory_string):
+        """
+        Returns None if not found. Will handle string with coast.
+        """
+        search_term = Territory.remove_coast(territory_string)
+
+        for terr in self.territories:
+            if terr.name == search_term:
+                return terr
+        return None
