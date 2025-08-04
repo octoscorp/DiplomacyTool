@@ -154,6 +154,7 @@ class Order:
         self.unit_type = unit[0]
         self.unit_location = unit[1]
         self.type = ord_type
+        self.strength = 1
 
         # Optional args
         # End destination of move, support, or convoy
@@ -164,13 +165,13 @@ class Order:
         # Fancy rubbish - different names for the same function. This feels a little silly for
         # get methods in python (since the variables are all public anyway), but would be a
         # great format for set methods.
-        self.get_move_start = self._get_u_location
-        self.get_supporting_unit_location = self._get_u_location
-        self.get_convoying_unit_location = self._get_u_location
+        self.get_move_start = self.get_ordered_unit_location
+        self.get_supporting_unit_location = self.get_ordered_unit_location
+        self.get_convoying_unit_location = self.get_ordered_unit_location
 
-        self.get_move_destination = self._get_end_dest
-        self.get_supported_unit_destination = self._get_end_dest
-        self.get_convoyed_unit_destination = self._get_end_dest
+        self.get_move_destination = self.get_order_destination
+        self.get_supported_unit_destination = self.get_order_destination
+        self.get_convoyed_unit_destination = self.get_order_destination
 
         self.get_supported_unit_type = self._get_helped_u_type
         self.get_convoyed_unit_type = self._get_helped_u_type
@@ -178,12 +179,18 @@ class Order:
         self.get_supported_unit_start = self._get_helped_u_location
         self.get_convoyed_unit_start = self._get_helped_u_location
 
+    def add_strength(self):
+        self.strength += 1
+
+    def remove_strength(self):
+        self.strength -= 1
+
     # The following get function groups are effectively overloaded definitions, where the
     # function name is changed instead of the arguments.
-    def _get_u_location(self):
+    def get_ordered_unit_location(self):
         return self.unit_location
 
-    def _get_end_dest(self):
+    def get_order_destination(self):
         """
         Return the destination of the move being made/supported/convoyed
         """
@@ -328,6 +335,9 @@ class Territory:
 class TerritoryMap:
     def __init__(self, territories, land_adjacency_list, sea_adjacency_list):
         self.territories = territories
+        self._territories_by_name = {
+            territory.name: territory
+            for territory in territories}
 
         self.land = UnweightedGraph(land_adjacency_list)
         self.sea = UnweightedGraph(sea_adjacency_list)
@@ -351,8 +361,8 @@ class TerritoryMap:
         Returns None if not found. Will handle string with coast.
         """
         search_term = Territory.remove_coast(territory_string)
-
-        for terr in self.territories:
-            if terr.name == search_term:
-                return terr
-        return None
+        try:
+            return self._territories_by_name[search_term]
+        except KeyError:
+            print(f"TerritoryMap: Attempt to get territory by name '{search_term}' failed")
+            return None

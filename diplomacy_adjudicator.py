@@ -4,7 +4,7 @@ Class for adjudicating Diplomacy moves
 Date: 10/6/2024
 Author: G Hampton
 """
-from diplomacy_utils import Order, Phase, Unit, Territory
+from diplomacy_utils import Order, Phase, Unit, Territory, TerritoryMap
 
 
 class BaseAdjudicator():
@@ -12,9 +12,10 @@ class BaseAdjudicator():
     An interface, which adjudicators should extend. Implements stubs of all test-interfacing methods and
     some bare-minimum methods and attributes to interact with them
     """
-    def __init__(self):
+    def __init__(self, starting_units: dict[str, list[Unit]]):
         self.phase = Phase.SPRING
-        self.units = {}
+        self.units = starting_units
+        self._update_unit_locations()
 
     def adjudicate_moveset(self, moveset):
         """
@@ -25,14 +26,44 @@ class BaseAdjudicator():
         # Override this method!
         raise NotImplementedError
 
-    def set_units(self, new_units):
+    def set_units(self, new_units: dict[str, list[Unit]]):
         """ Replace existing unit dict with new_units """
         self.units = new_units
+        self._update_unit_locations()
 
     def add_unit(self, unit):
         if unit.team not in self.units.keys():
             self.units[unit.team] = []
         self.units[unit.team].append(unit)
+        self._update_unit_locations(unit)
+
+    def _update_unit_locations(self, added_unit: Unit=None):
+        """
+        (Re)populates _units_by_location based on current units. If
+        added_unit is passed, adds that unit without regenerating.
+        """
+        if added_unit != None:
+            # Don't regenerate in this circumstance
+            self._units_by_location[added_unit.location] = added_unit
+            return
+        self._units_by_location = {}
+        for unit_list in self.units.values():
+            for unit in unit_list:
+                self._units_by_location[unit.location] = unit
+
+    def apply_moves(self, moves: list[Order]):
+        """
+        Move units based on the moveset. This should already have been validated.
+        """
+        pass
+
+    def get_unit_at_location(self, location_str):
+        try:
+            return self._units_by_location[location_str]
+        except KeyError:
+            if Territory.get_coast(location_str):
+                return self.get_unit_at_location(Territory.remove_coast(location_str))
+        return None
 
     # Tester interface
     def test_remove_all_units(self):
@@ -85,18 +116,19 @@ class BaseAdjudicator():
 
 
 class DiplomacyAdjudicator(BaseAdjudicator):
-    def __init__(self, adjacency, territories, units):
-        super()
-        self.adjacency = adjacency
+    def __init__(self, territories: TerritoryMap, starting_units):
+        super(starting_units)
         self.territories = territories
-        self.set_units(units)
 
+        # TODO: implement retreats
         self.retreats = []
-        self.counts_last_round = {team: 0 for team in units.keys()}
-        for name in self.territories.keys():
-            team = self.territories[name].owned_by
-            if team:
-                self.counts_last_round[team] += 1
+
+        # TODO: Reimplement build turn validation
+        # self.counts_last_round = {team: 0 for team in starting_units.keys()}
+        # for name in self.territories.keys():
+        #     team = self.territories[name].owned_by
+        #     if team:
+        #         self.counts_last_round[team] += 1
 
     def step_phase(self):
         self.phase = Phase.get_next_phase(self.phase)
@@ -105,7 +137,7 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         """Really well-formatted way to get the change in number of SCs for each team"""
         return {
             team_name: len([self.territories[name] for name in self.territories.keys() if self.territories[name].owned_by == team_name]) - self.counts_last_round[team_name]
-        for team_name in self.units.keys()}
+            for team_name in self.units.keys()}
 
     def adjudicate_builds(self, orders):
         valid = []
@@ -146,8 +178,19 @@ class DiplomacyAdjudicator(BaseAdjudicator):
 
     def adjudicate_moveset(self, orders):
         # Overriding abstract implementation
-        if Phase.get_phase_type(self.get_current_phase()) == Phase.BUILD:
-            return self.adjudicate_builds(orders)
+        match Phase.get_phase_type(self.get_current_phase()):
+            case Phase.BUILD:
+                return self.adjudicate_builds(orders)
+            case Phase.RETREAT:
+                return self._adjudicate_retreat(orders)
+            case Phase.STANDARD | \
+                 _:
+                return self._adjudicate_standard(orders)
+
+    def _adjudicate_standard(self, orders):
+        """
+        Non-build and non-retreat turn
+        """
         check_for_convoys = []
         moves = []
         holds = []
@@ -170,7 +213,8 @@ class DiplomacyAdjudicator(BaseAdjudicator):
                     supports.append(order)
                 case Order.CONVOY:
                     convoys.append(order)
-                case Order.HOLD:
+                case Order.HOLD | \
+                     _:
                     holds.append(order)
 
         convoyed = self.check_convoys(check_for_convoys, convoys)
@@ -180,6 +224,9 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         retreats = self.compare_strength(supports, moves, holds, convoys)
         self.remove_broken_convoys(convoyed, moves, convoys)
         return moves
+
+    def _adjudicate_retreat(self, orders):
+        pass
 
     def remove_broken_convoys(self, convoyed, moves, convoys):
         """
@@ -352,29 +399,42 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         visited.remove(current)
         path.remove(current)
 
-    def validate_order(self, order):
+    def validate_order(self, order: Order):
         """Return a boolean of whether an order is valid or not."""
-        legal_moves = self.get_legal_moves_for_unit(order.unit_type, order.unit_location)
         is_valid = False
+        unit = self.get_ordered_unit(order)
+        if unit == None:
+            return is_valid
+
         match order.type:
-            case Order.MOVE:
-                is_valid = self._validate_move(order, legal_moves)
-            case Order.SUPPORT:
-                # This is exploiting the fact that get_move_destination and
-                # get_supported_unit_destination wrap the same function.
-                is_valid = self._validate_move(order, legal_moves)
+            case Order.MOVE | \
+                 Order.SUPPORT:
+                is_valid = self._validate_move_or_support(order, unit)
             case Order.CONVOY:
                 is_valid = self._validate_convoy(order)
             case Order.HOLD:
                 is_valid = True
         return is_valid
 
-    def _validate_move(self, order, legal_moves):
-        """Helper for validate_order. Check that the destination is reachable from here."""
-        if order.get_move_start() == order.get_move_destination():
+    def get_ordered_unit(self, order: Order):
+        """Consult with storage of unit locations"""
+        return self.get_unit_at_location(order.get_ordered_unit_location())
+
+    def _validate_move_or_support(self, order: Order, unit: Unit):
+        """
+        Helper for validate_order. Check that the order destination is valid.
+        This exploits the fact that get_move_destination and
+        get_supported_unit_destination wrap the same function, so move and
+        support are validated the same way.
+        """
+        # Cannot move/support to own location
+        if order.get_ordered_unit_location() == order.get_order_destination():
             return False
-        for move in legal_moves:
-            if move == order.get_move_destination():
+
+        # Check the end point is on the legal list
+        legal_dests = self.get_legal_destinations_for_order(order, unit)
+        for dest in legal_dests:
+            if dest == order.get_order_destination():
                 return True
         return False
 
@@ -388,11 +448,15 @@ class DiplomacyAdjudicator(BaseAdjudicator):
             self.territories[order.get_convoyed_unit_start].type in shared_types and \
             self.territories[order.get_convoyed_unit_destination].type in shared_types
 
-    def get_legal_moves_for_unit(self, unit_type, unit_location):
+    def get_legal_destinations_for_order(self, order: Order, unit: Unit):
         """
         Return the set of legal locations for this unit to move given its type and starting location.
         This set is stripped of coast.
         """
+        # Supports CAN go to an unreachable coast, Moves CANNOT
+
+        # TerritoryMap.getneighbours(unit) gives adjacencies to the unit
+
         legal_moves = []
         if unit_type == Unit.ARMY:
             valid_types = [Territory.CANAL, Territory.COAST, Territory.LAND]
