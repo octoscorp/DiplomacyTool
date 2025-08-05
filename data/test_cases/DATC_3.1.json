@@ -1418,37 +1418,1764 @@
     {
       "title": "6.D SUPPORTS AND DISLODGES",
       "tests": [
+        {
+          "index": "6.D.1",
+          "desc": "Supported hold prevents dislodgement",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.2",
+          "desc": "A move cuts support on hold",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "VIE",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN",
+                "A VIE -> TYR"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A TRI -> VEN"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.3",
+          "desc": "A move cuts support on move",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.4",
+          "desc": "A unit that is supporting a hold can receive a hold support",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.5",
+          "desc": "A unit that is supporting a move can receive a hold support",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.6",
+          "desc": "A unit that is convoying can receive a hold support",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.7",
+          "desc": "A unit that is moving cannot receive a hold support, even if the move fails",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.8",
+          "desc": "An army which failed to be convoyed cannot receive a hold support",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.9",
+          "desc": "A unit that is holding cannot receive a support in moving",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.10",
+          "desc": "A unit may not dislodge a unit of the same team",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.11",
+          "desc": "A unit cannot dislodge a unit of the same team which failed a move",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.12",
+          "desc": "Supporting another team's unit to dislodge your own unit is prohibited",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.13",
+          "desc": "Supporting a foriegn unit to dislodge your own unit should fail when your unit fails a move",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F ADR S A TRI -> VEN",
+                "A TRI -> VEN"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN H",
+                "A TYR S A VEN H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.14",
+          "desc": "Supporting a foreign unit against your unit should not prevent an attack",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "VIE",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "F",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            },
+            {
+              "type": "F",
+              "location": "ADR",
+              "team": "ITALY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F TRI H",
+                "A VIE S A VEN -> TRI"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN -> TRI",
+                "A TYR S A VEN -> TRI",
+                "F ADR S A VEN -> TRI"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN -> TRI"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.15",
+          "desc": "Defender cannot cut support of attack against itself",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "CON",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "F",
+              "location": "ANK",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F CON S F BLA -> ANK",
+                "F BLA -> ANK"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BLA -> ANK"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.16",
+          "desc": "Convoying a unit to dislodge your own unit is allowed",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "LON",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "F",
+              "location": "NTH",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "F",
+              "location": "ENG",
+              "team": "FRANCE"
+            },
+            {
+              "type": "A",
+              "location": "BEL",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "A LON H",
+                "F NTH C A BEL -> LON"
+              ]
+            },
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F ENG S A BEL -> LON",
+                "A BEL -> LON"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "A BEL -> LON"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.17",
+          "desc": "Dislodgement cuts supports",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "CON",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "F",
+              "location": "ANK",
+              "team": "TURKEY"
+            },
+            {
+              "type": "A",
+              "location": "SMY",
+              "team": "TURKEY"
+            },
+            {
+              "type": "A",
+              "location": "ARM",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F CON S F BLA -> ANK",
+                "F BLA -> ANK"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON",
+                "A SMY S F ANK -> CON",
+                "A ARM -> ANK"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.18",
+          "desc": "A supported unsuccessful attack does not cut support to attack that unit",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "CON",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "BUL",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "F",
+              "location": "ANK",
+              "team": "TURKEY"
+            },
+            {
+              "type": "A",
+              "location": "SMY",
+              "team": "TURKEY"
+            },
+            {
+              "type": "A",
+              "location": "ARM",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F CON S F BLA -> ANK",
+                "F BLA -> ANK",
+                "A BUL S F CON H"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON",
+                "A SMY S F ANK -> CON",
+                "A ARM -> ANK"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BLA -> ANK"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.19",
+          "desc": "Cannot support attack from a unit to cut support from own unit to attack it",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "CON",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "SMY",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "F",
+              "location": "ANK",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F CON S F BLA -> ANK",
+                "F BLA -> ANK",
+                "A SMY S F ANK -> CON"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F ANK -> CON"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BLA -> ANK"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.20",
+          "desc": "Cannot cut support of own country",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "LON",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "F",
+              "location": "NTH",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "A",
+              "location": "YOR",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "F",
+              "location": "ENG",
+              "team": "FRANCE"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F LON S F NTH -> ENG",
+                "F NTH -> ENG",
+                "A YOR -> LON"
+              ]
+            },
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F ENG H"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F NTH -> ENG"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.21",
+          "desc": "Cannot prevent support cut by dislodging failed move",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "TRI",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "VEN",
+              "team": "ITALY"
+            },
+            {
+              "type": "A",
+              "location": "TYR",
+              "team": "ITALY"
+            },
+
+            {
+              "type": "A",
+              "location": "MUN",
+              "team": "GERMANY"
+            },
+
+            {
+              "type": "A",
+              "location": "SIL",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "BER",
+              "team": "RUSSIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "F TRI H"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A VEN -> TRI",
+                "A TYR S A VEN -> TRI"
+              ]
+            },
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A MUN -> TYR"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A SIL -> MUN",
+                "A BER S A SIL -> MUN"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A SIL -> MUN"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.22",
+          "desc": "Support of invalid fleet move inland does not add defense to fleet",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "KIE",
+              "team": "GERMANY"
+            },
+            {
+              "type": "A",
+              "location": "BUR",
+              "team": "GERMANY"
+            },
+
+            {
+              "type": "A",
+              "location": "MUN",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "BER",
+              "team": "RUSSIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "F KIE -> MUN",
+                "A BUR S F KIE -> MUN"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A MUN -> KIE",
+                "A BER S A MUN -> KIE"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A MUN -> KIE"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.23",
+          "desc": "Support of invalid army move offshore does not contribute to beleaguered garrison",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "MAR",
+              "team": "FRANCE"
+            },
+            {
+              "type": "F",
+              "location": "SPA-sc",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "F",
+              "location": "LYO",
+              "team": "ITALY"
+            },
+
+            {
+              "type": "F",
+              "location": "TYS",
+              "team": "TURKEY"
+            },
+            {
+              "type": "F",
+              "location": "WES",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "A MAR -> LYO",
+                "F SPA-sc S A MAR -> LYO"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO H"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F TYS S F WES -> LYO",
+                "F WES -> LYO"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A MUN -> KIE"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.24",
+          "desc": "Support of invalid army move offshore does not contribute to beleaguered garrison",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "MAR",
+              "team": "FRANCE"
+            },
+            {
+              "type": "F",
+              "location": "SPA-sc",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "F",
+              "location": "LYO",
+              "team": "ITALY"
+            },
+
+            {
+              "type": "F",
+              "location": "TYS",
+              "team": "TURKEY"
+            },
+            {
+              "type": "F",
+              "location": "WES",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "A MAR -> LYO",
+                "F SPA-sc S A MAR -> LYO"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F LYO H"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F TYS S F WES -> LYO",
+                "F WES -> LYO"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A MUN -> KIE"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.25",
+          "desc": "Failed support hold can still receive support to hold",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "BER",
+              "team": "GERMANY"
+            },
+            {
+              "type": "F",
+              "location": "KIE",
+              "team": "GERMANY"
+            },
+
+            {
+              "type": "F",
+              "location": "BAL",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "PRU",
+              "team": "RUSSIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A BER S A PRU H",
+                "F KIE S A BER H"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BAL S A PRU -> BER",
+                "A PRU -> BER"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.26",
+          "desc": "Failed support move can still receive support to hold",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "BER",
+              "team": "GERMANY"
+            },
+            {
+              "type": "F",
+              "location": "KIE",
+              "team": "GERMANY"
+            },
+
+            {
+              "type": "F",
+              "location": "BAL",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "PRU",
+              "team": "RUSSIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A BER S A PRU -> SIL",
+                "F KIE S A BER H"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BAL S A PRU -> BER",
+                "A PRU -> BER"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.27",
+          "desc": "Failed convoy can still receive support to hold",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "SWE",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "F",
+              "location": "DEN",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "A",
+              "location": "BER",
+              "team": "GERMANY"
+            },
+
+            {
+              "type": "F",
+              "location": "BAL",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "PRU",
+              "team": "RUSSIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F SWE -> BAL",
+                "F DEN S F SWE -> BAL"
+              ]
+            },
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A BER H"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F BAL C A BER -> LVN",
+                "F PRU S F BAL H"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.28",
+          "desc": "Illegal move by non-adjacency is ignored and can receive support",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "BUD",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "F",
+              "location": "RUM",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "TURKEY"
+            },
+            {
+              "type": "A",
+              "location": "BUL",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A BUD S F RUM H"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F RUM -> HOL"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F BLA -> RUM",
+                "A BUL S F BLA -> RUM"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.29",
+          "desc": "Illegal move by wrong coast is ignored and can receive support",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "BUD",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "F",
+              "location": "RUM",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "TURKEY"
+            },
+            {
+              "type": "A",
+              "location": "BUL",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A BUD S F RUM H"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F RUM -> BUL-sc"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F BLA -> RUM",
+                "A BUL S F BLA -> RUM"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.30",
+          "desc": "Illegal move due to missing coast is ignored and can receive support",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "AEG",
+              "team": "ITALY"
+            },
+
+            {
+              "type": "F",
+              "location": "CON",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "TURKEY"
+            },
+            {
+              "type": "A",
+              "location": "BUL",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ITALY",
+              "moveset": [
+                "F AEG S F CON H"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "F CON -> BUL"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F BLA -> CON",
+                "A BUL S F BLA -> CON"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.31",
+          "desc": "Support move is illegal from a fleet that must convoy to make the move possible",
+          "_comment": "This case notably requires the support is invalid, not currently supported",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "RUM",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "F",
+              "location": "BLA",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A RUM -> ARM"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "F BLA S A RUM -> ARM"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.32",
+          "desc": "Illegal move by lack of possible convoy is ignored and can receive hold support",
+          "start_units": [
+            {
+              "type": "F",
+              "location": "EDI",
+              "team": "ENGLAND"
+            },
+            {
+              "type": "A",
+              "location": "LIV",
+              "team": "ENGLAND"
+            },
+
+            {
+              "type": "F",
+              "location": "LON",
+              "team": "FRANCE"
+            },
+
+            {
+              "type": "A",
+              "location": "YOR",
+              "team": "GERMANY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "ENGLAND",
+              "moveset": [
+                "F EDI S A LIV -> YOR",
+                "A LIV -> YOR"
+              ]
+            },
+            {
+              "team": "FRANCE",
+              "moveset": [
+                "F LON S A YOR H"
+              ]
+            },
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A YOR -> HOL"
+              ]
+            }
+          ],
+          "result_moves": []
+        },
+        {
+          "index": "6.D.33",
+          "desc": "Support by other country can break self-bounce",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "SER",
+              "team": "AUSTRIA"
+            },
+            {
+              "type": "A",
+              "location": "VIE",
+              "team": "AUSTRIA"
+            },
+
+            {
+              "type": "A",
+              "location": "GAL",
+              "team": "RUSSIA"
+            },
+
+            {
+              "type": "A",
+              "location": "BUL",
+              "team": "TURKEY"
+            }
+          ],
+          "orders": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A SER -> BUD",
+                "A VIE -> BUD"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A GAL S A SER -> BUD"
+              ]
+            },
+            {
+              "team": "TURKEY",
+              "moveset": [
+                "A BUL -> SER"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "AUSTRIA",
+              "moveset": [
+                "A SER -> BUD"
+              ]
+            },
+            {
+              "team": "TUR",
+              "moveset": [
+                "A BUL -> SER"
+              ]
+            }
+          ]
+        },
+        {
+          "index": "6.D.34",
+          "desc": "Support to attack self is illegal",
+          "start_units": [
+            {
+              "type": "A",
+              "location": "BER",
+              "team": "GERMANY"
+            },
+            {
+              "type": "A",
+              "location": "SIL",
+              "team": "GERMANY"
+            },
+            {
+              "type": "F",
+              "location": "BAL",
+              "team": "GERMANY"
+            },
+
+            {
+              "type": "A",
+              "location": "PRU",
+              "team": "ITALY"
+            },
+
+            {
+              "type": "A",
+              "location": "WAR",
+              "team": "RUSSIA"
+            },
+            {
+              "type": "A",
+              "location": "LIV",
+              "team": "RUSSIA"
+            }
+          ],
+          "orders": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A BER -> PRU",
+                "A SIL S A BER -> PRU",
+                "F BAL S A BER -> PRU"
+              ]
+            },
+            {
+              "team": "ITALY",
+              "moveset": [
+                "A PRU S LIV -> PRU"
+              ]
+            },
+            {
+              "team": "RUSSIA",
+              "moveset": [
+                "A WAR S A LIV -> PRU",
+                "A LIV -> PRU"
+              ]
+            }
+          ],
+          "result_moves": [
+            {
+              "team": "GERMANY",
+              "moveset": [
+                "A BER -> PRU"
+              ]
+            }
+          ]
+        }
       ]
     },
     {
       "title": "6.E HEAD-TO-HEAD BATTLES AND BELEAGUERED GARRISON",
       "tests": [
+        "TODO: 15 cases"
       ]
     },
     {
       "title": "6.F CONVOYS",
       "tests": [
+        "TODO: 25 cases"
       ]
     },
     {
       "title": "6.G CONVOYING TO ADJACENT PROVINCES",
       "tests": [
+        "TODO: 20 cases"
       ]
     },
     {
       "title": "6.H RETREATING",
       "tests": [
+        "TODO: 16 cases"
       ]
     },
     {
       "title": "6.I BUILDING",
       "tests": [
+        "TODO: 7 cases"
       ]
     },
     {
       "title": "6.J CIVIL DISORDER AND DISBANDS",
       "tests": [
+        "TODO: 11 cases"
       ]
-    },
+    }
   ]
 }
