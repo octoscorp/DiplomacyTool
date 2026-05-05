@@ -116,6 +116,35 @@ class BaseAdjudicator():
 
 
 class DiplomacyAdjudicator(BaseAdjudicator):
+    # Order validation states
+    NO_UNIT = 0
+    ILLEGAL = 1
+    INVALID = 2
+    VALID = 3
+
+    # Legal order rules
+    class MOVE_TYPES:
+        TERRITORY = {
+            Unit.ARMY: [
+                Territory.LAND,
+                Territory.COAST,
+                Territory.CANAL,
+            ],
+            Unit.FLEET: [
+                Territory.OCEAN,
+                Territory.COAST,
+                Territory.CANAL,
+            ]
+        }
+
+    class CONVOY_TYPES:
+        CONVOYING_UNIT = [Unit.FLEET]
+        CONVOYING_TERRITORY = [Territory.OCEAN]
+        CONVOYED_UNIT = [Unit.ARMY]
+        CONVOYED_TERRITORY = [Territory.COAST, Territory.CANAL]
+
+    #TODO: Cleanup function privacy
+
     def __init__(self, territories: TerritoryMap, starting_units):
         super(starting_units)
         self.territories = territories
@@ -191,6 +220,14 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         """
         Non-build and non-retreat turn
         """
+        # Holds are always valid, can be entered.
+        # Orders that are illegal can be entered as holds
+        # - Support/Move targeting self
+        # - Convoys when the convoyed unit does not exist
+        # - Move without adj or (army only) possible fleet connection to convoy
+        # - Support from unit that has to convoy for supported move to occur
+        # Moves to an adjacent space are trivially entered.
+        # =======
         check_for_convoys = []
         moves = []
         holds = []
@@ -199,12 +236,14 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         self.retreats = []
 
         for order in orders:
-            is_valid = self.validate_order(order)
-            if not is_valid:
-                if order.type == Order.MOVE and order.unit_type == Unit.ARMY:
-                    # A unit can't move to its own location
-                    if order.get_move_start() != order.get_move_destination():
-                        check_for_convoys.append(order)
+            validity = self.validate_order(order)
+            # Enter all illegal moves as holds
+            if validity == self.ILLEGAL:
+                order = Order(Order.HOLD, order.unit)
+                validity == self.VALID
+            # Invalid orders
+            if validity == self.INVALID and order.type == Order.MOVE:
+                check_for_convoys.append(order)
                 continue
             match order.type:
                 case Order.MOVE:
@@ -400,79 +439,120 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         path.remove(current)
 
     def validate_order(self, order: Order):
-        """Return a boolean of whether an order is valid or not."""
-        is_valid = False
+        """
+        Checks whether an order is valid or not.
+        @return one of:
+          NO_UNIT: The unit being ordered does not exist
+          ILLEGAL: The given order cannot be valid and should be treated as a hold
+          INVALID: The given order may be valid, dependent on other moves
+          VALID: The given order is trivially valid e.g. holds, move to adjacent space
+        """
+        is_valid = self.NO_UNIT
         unit = self.get_ordered_unit(order)
         if unit == None:
             return is_valid
 
         match order.type:
-            case Order.MOVE | \
-                 Order.SUPPORT:
-                is_valid = self._validate_move_or_support(order, unit)
-            case Order.CONVOY:
-                is_valid = self._validate_convoy(order)
             case Order.HOLD:
-                is_valid = True
+                # Trivially valid
+                return self.VALID
+            case Order.MOVE:
+                is_valid = self._validate_move(order, unit) 
+            case Order.SUPPORT:
+                is_valid = self._validate_support(order, unit)
+            case Order.CONVOY:
+                is_valid = self._validate_convoy(order, unit)
+        
+        # All non-hold orders cannot target themselves
+        if order.get_ordered_unit_location() == order.get_order_destination():
+            return self.ILLEGAL
+
         return is_valid
 
     def get_ordered_unit(self, order: Order):
         """Consult with storage of unit locations"""
         return self.get_unit_at_location(order.get_ordered_unit_location())
+    
+    def get_assisted_unit(self, order: Order):
+        """Checked against unit locations"""
+        return self.get_unit_at_location(order.get_supported_unit_start())
 
-    def _validate_move_or_support(self, order: Order, unit: Unit):
+    def _validate_move(self, order: Order, unit: Unit):
         """
         Helper for validate_order. Check that the order destination is valid.
         This exploits the fact that get_move_destination and
         get_supported_unit_destination wrap the same function, so move and
         support are validated the same way.
         """
-        # Cannot move/support to own location
-        if order.get_ordered_unit_location() == order.get_order_destination():
-            return False
-
         # Check the end point is on the legal list
-        legal_dests = self.get_legal_destinations_for_order(order, unit)
+        legal_dests = self.get_legal_destinations_for_order(unit)
         for dest in legal_dests:
             if dest == order.get_order_destination():
-                return True
-        return False
+                return self.VALID
+        return self.INVALID
 
-    def _validate_convoy(self, order):
-        """
-        Helper for validate_order. Check that the convoying unit is in Ocean, and the
-        convoyed unit start/destination are on the shore.
-        """
-        shared_types = [Territory.CANAL, Territory.COAST]
-        return self.territories[order.get_convoying_unit_location].type == Territory.OCEAN and \
-            self.territories[order.get_convoyed_unit_start].type in shared_types and \
-            self.territories[order.get_convoyed_unit_destination].type in shared_types
+    def _validate_support(self, order: Order, unit: Unit):
+        # TODO: Add DATC 6.D.31 check (support when must convoy)
+        legal_dests = self.get_legal_destinations_for_order(unit, is_support=True)
+        pass
 
-    def get_legal_destinations_for_order(self, order: Order, unit: Unit):
+    def _validate_convoy(self, order: Order, unit: Unit):
         """
-        Return the set of legal locations for this unit to move given its type and starting location.
+        Helper for validate_order. Check the unit types and order territories against
+        self.CONVOY_TYPES.
+        @return one of:
+          ILLEGAL
+          INVALID (depends on other convoy moves to succeed)
+          VALID (convoying unit can reach both start and end)
+        """
+        # Check that we are unit which can convoy, carrying a unit which can be convoyed
+        convoyed_unit = self.get_assisted_unit(order)
+        if convoyed_unit == None or \
+           convoyed_unit.type not in self.CONVOY_TYPES.CONVOYED_UNIT or \
+           unit.type not in self.CONVOY_TYPES.CONVOYING_UNIT:
+            return self.ILLEGAL
+
+        # Check that we are in a valid space for convoying and trying to convoy between allowed types of space
+        if convoyed_unit.location not in self.CONVOY_TYPES.CONVOYED_TERRITORY or \
+           order.get_order_destination() not in self.CONVOY_TYPES.CONVOYED_TERRITORY or \
+           unit.location not in self.CONVOY_TYPES.CONVOYING_TERRITORY:
+            return self.ILLEGAL
+        
+        # We can declare a convoy between two locations the fleet can reach valid.
+        # The case where they are the same location is cleaned up in validate_order
+        legal_dests = self.get_legal_destinations_for_order(unit)
+        reachable_count = 0
+        for dest in legal_dests:
+            if dest == order.get_order_destination() or \
+               dest == convoyed_unit.location:
+                reachable_count += 1
+        if reachable_count == 2:
+            return self.VALID
+        
+        return self.INVALID
+
+    def get_legal_destinations_for_order(self, unit: Unit, is_support=False):
+        """
+        Return the set of legal this unit may receive orders for.
         This set is stripped of coast.
         """
         # Supports CAN go to an unreachable coast, Moves CANNOT
 
         # TerritoryMap.getneighbours(unit) gives adjacencies to the unit
+        neighbours = self.territories.get_neighbours(unit)
+
+        if unit.type == Unit.ARMY or \
+           not is_support:
+            return neighbours
 
         legal_moves = []
-        if unit_type == Unit.ARMY:
-            valid_types = [Territory.CANAL, Territory.COAST, Territory.LAND]
-        if unit_type == Unit.FLEET:
-            valid_types = [Territory.CANAL, Territory.COAST, Territory.OCEAN]
-
-        start_terr = Territory.remove_coast(unit_location)
-        start_coast = Territory.get_coast(unit_location)
-
-        for location in self.adjacency[unit_type][start_terr]:
+        for location in :
             from_coast, location, to_coast = split_coast(location)
             if unit_from_coast != None:
                 if from_coast == None or from_coast != unit_from_coast:
                     continue
             territory = self.territories[location]
-            if territory.type in valid_spaces:    
+            if territory.type in self.MOVE_TYPES.TERRITORY[unit.type]:
                 if to_coast:
                     # TODO: str-format
                     location = f'{location}-{to_coast}'
@@ -500,8 +580,8 @@ class DiplomacyAdjudicator(BaseAdjudicator):
         """ This function returns a list of the test cases which this adjudicator fails intentionally. """
         return {
             "DATC_3.1": [
-                ("6.A.6", "This is intended for a sandbox environment"),    # Ordering a unit of another country - this is intended for a sandbox environment.
-                ("6.B.7", "Usage in face-to-face play should be a little more generous"),    # Supporting own unit with unspecified coast - this is intended for use in face-to-face play, so is a little more generous.
+                ("6.A.6", "This is intended for a sandbox environment"),    # Ordering a unit of another country.
+                ("6.B.7", "Usage in face-to-face play should be a little more generous"),    # Supporting own unit with unspecified coast.
             ],
         }
 
